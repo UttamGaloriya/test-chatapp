@@ -1,0 +1,43 @@
+<div class="container account-page">
+    <div class="account-container signup-form">
+        <div class="logo">
+            <img src="./assets/images/logo.png" alt="logo">
+        </div>
+        <mat-card>
+            <img src="./assets/images/microsoft-logo.svg" alt="microsoft-logo">
+            <mat-card-header>
+                <mat-card-title> Create account </mat-card-title>
+                <mat-card-subtitle>to continue to Skype</mat-card-subtitle>
+            </mat-card-header>
+            <form (ngSubmit)="signup()" [formGroup]="signupForm" class="form">
+
+                <mat-form-field class="input-box">
+                    <mat-label>Email</mat-label>
+                    <input matInput placeholder="pat@example.com" formControlName="email">
+                    <mat-error *ngIf="signupForm.controls.email.errors && signupForm.controls.email.touched">
+                        Enter Email
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field class="input-box">
+                    <mat-label>Password</mat-label>
+                    <input matInput [type]="hide ? 'password' : 'text'" formControlName="password">
+                    <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+                        [attr.aria-pressed]="hide" type="button">
+                        <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                        <mat-error *ngIf="signupForm.controls.password.errors && signupForm.controls.password.touched">
+                            Enter Password
+                        </mat-error>
+                    </button>
+                </mat-form-field>
+
+                <P class="account-link">Already Register ?<a routerLink="/account/login"> Go to login</a></P>
+
+                <div class="button-box">
+                    <button mat-flat-button color="primary" type="submit" class="account-btn">SIGN UP</button>
+                </div>
+
+            </form>
+        </mat-card>
+    </div>
+</div>

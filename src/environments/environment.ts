@@ -3,7 +3,16 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  firebaseConfig: {
+    apiKey: "AIzaSyBd2qrxKb-n2ZFfo1HiwtF96SBwyhaDrEw",
+    authDomain: "skype-72562.firebaseapp.com",
+    projectId: "skype-72562",
+    storageBucket: "skype-72562.appspot.com",
+    messagingSenderId: "1023385279539",
+    appId: "1:1023385279539:web:d48c2617596e24f8cb9746",
+    measurementId: "G-ME2F5ELYQV"
+  }
 };
 
 /*

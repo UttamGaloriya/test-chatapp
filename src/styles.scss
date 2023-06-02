@@ -1,1 +1,62 @@
+
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@use '~@angular/material' as mat;
+// Plus imports for other components in your app.
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat.core();
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+$skype-primary: mat.define-palette(mat.$indigo-palette);
+$skype-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+
+// The warn palette is optional (defaults to red).
+$skype-warn: mat.define-palette(mat.$red-palette);
+
+// Create the theme object. A theme consists of configurations for individual
+// theming systems such as "color" or "typography".
+$skype-theme: mat.define-light-theme((
+  color: (
+    primary: $skype-primary,
+    accent: $skype-accent,
+    warn: $skype-warn,
+  )
+));
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include mat.all-component-themes($skype-theme);
+
 /* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif;background: #f1f1f4; }
+
+a{text-decoration: none;}
+.input-box{width: 100%;}
+.account-page{max-width: 1400px;display: flex;height: 100%;margin: 0 auto;align-items: center;}
+.container .mat-flat-button{border-radius: 0px;}
+//
+.container{max-width: 1400px;margin: 0 auto;}
+.account-container{max-width: 440px; margin: 250px auto;width: 100%;padding:16px}
+.account-container .mat-card{padding: 44px;}
+.account-container .mat-card-subtitle {color: #1b1b1b;}
+.account-container .mat-card-header .mat-card-title {font-size: 24px;}
+.account-container .logo{margin-bottom: 24px;text-align: center;}
+.account-container .mat-card-header-text {margin: 15px 0px;}
+.account-container .account-link{font-size: 14px;}
+.account-link a{
+  color: #0067b8;
+  &:hover,&:focus{color: #666;text-decoration: underline;}
+}
+.account-container .button-box{width: 100%;display: flex;}
+.account-container .account-btn{margin-left: auto;background: #0067b8;width: 108px;letter-spacing: 1px;}
+.signup-form  .mat-card-header .mat-card-title {font-size: 30px;}
+.form .mat-icon {font-size: 16px;color: #0067b8;}
+.form .mat-icon-button {font-size: 25px !important} 
