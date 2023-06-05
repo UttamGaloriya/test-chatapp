@@ -1,0 +1,62 @@
+<div class="form-container">
+    <mat-card>
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+            <!--  first  name  -->
+            <mat-form-field appearance="outline" class="max-100">
+                <mat-label>First Name</mat-label>
+                <input matInput formControlName="firstName">
+                <mat-error *ngIf="f.firstName.touched && f.firstName.errors?.required">Enter Your First Name</mat-error>
+                <mat-error *ngIf="f.firstName.errors?.spacesOnly && !f.firstName.errors?.required ">Error: Only spaces
+                    are not allowed</mat-error>
+                <mat-error *ngIf="f.firstName.errors?.invalidInput">Note: Use letters, numbers, and special
+                    characters</mat-error>
+            </mat-form-field>
+            <!-- last name  -->
+            <mat-form-field appearance="outline" class="max-100">
+                <mat-label>Last Name</mat-label>
+                <input matInput formControlName="lastName">
+                <mat-error *ngIf="f.lastName.touched && f.lastName.errors?.required">Enter Your Last Name</mat-error>
+                <mat-error *ngIf="f.lastName.errors?.spacesOnly && !f.lastName.errors?.required ">Error: Only spaces
+                    are not allowed</mat-error>
+                <mat-error *ngIf="f.lastName.errors?.invalidInput">Note: Use letters, numbers, and special
+                    characters</mat-error>
+            </mat-form-field>
+            <!-- user name  -->
+            <mat-form-field appearance="outline" class="max-100">
+                <mat-label>User Name</mat-label>
+                <input matInput formControlName="userName">
+                <mat-error *ngIf="f.userName.touched && f.userName.errors?.required">Enter Your Name</mat-error>
+                <mat-error *ngIf="f.userName.errors?.spacesOnly && !f.userName.errors?.required ">Error: Only spaces
+                    are not allowed</mat-error>
+                <mat-error *ngIf="f.userName.errors?.invalidInput">Note: Do Not Use special
+                    characters</mat-error>
+            </mat-form-field>
+
+
+            <!-- user gender -->
+
+
+            <mat-radio-group aria-labelledby="example-radio-group-label"
+                class="example-radio-group  example-radio-button " formControlName="gender">
+                <label id="example-radio-group-label">Gender : </label>
+                <mat-radio-button *ngFor="let season of seasons" [value]="season" class="ml-16">
+                    {{season}}
+                </mat-radio-button>
+            </mat-radio-group>
+
+
+
+
+
+
+            <!-- button  -->
+
+            <div class="button-box">
+                <button mat-flat-button color="primary" type="submit" class="account-btn">Update</button>
+            </div>
+
+
+        </form>
+    </mat-card>
+    <button type="button" (click)="mydata()">task</button>
+</div>

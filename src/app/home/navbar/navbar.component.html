@@ -1,0 +1,25 @@
+<div class="navbar">
+    <button class="profile-photo">
+        <img src="/assets/images/user-profile.png" alt="profile-photo">
+    </button>
+    <div class="profile-name">
+        <h3>user_name</h3>
+        <button class="set-status">Set status</button>
+    </div>
+    <div class="more-setting">
+        <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+            <mat-icon>more_horiz</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="logout()">
+                <span>Sign Out</span>
+            </button>
+            <!-- <button mat-menu-item>
+                <span>Check voice mail</span>
+            </button>
+            <button mat-menu-item>
+                <span>Disable alerts</span>
+            </button> -->
+        </mat-menu>
+    </div>
+</div>

@@ -3,6 +3,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { AuthService } from 'src/app/services/auth.service';
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { Router } from '@angular/router';
+import { NotificationService } from 'src/app/services/notification.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -11,12 +12,12 @@ import { Router } from '@angular/router';
 export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
   hide = false
-  constructor(private fb: FormBuilder, private authServices: AuthService, private router: Router) { }
+  constructor(private fb: FormBuilder, private authServices: AuthService, private router: Router, private notification: NotificationService) { }
 
   ngOnInit(): void {
     this.loginForm = this.fb.group({
-      email: ['', [Validators.required, this.validateInput]],
-      password: ['', [Validators.required, this.validatePassword]]
+      email: ['', [Validators.required,]],
+      password: ['', [Validators.required,]]
     })
   }
 
@@ -24,9 +25,16 @@ export class LoginComponent implements OnInit {
     console.log(this.loginForm.value)
     if (this.loginForm.valid) {
       this.authServices.signIn(this.loginForm.value.email, this.loginForm.value.password).subscribe(
-        (res) => { console.log(res), alert("login done") },
-        (err) => { console.log(err) },
-        () => { console.log("login complite"), this.router.navigateByUrl('/account/signup') }
+        (res) => {
+          console.log(res), alert("login done"), this.notification.showNotification("login Successful", "ok", "success"),
+            this.authServices.setToken(),
+            this.authServices.sotreDataToken(res.idToken)
+        },
+        (err) => { console.log(err), this.notification.showNotification("Something wrong plese try again", "ok", "error") },
+        () => {
+          console.log("login complite"),
+            this.router.navigateByUrl('')
+        }
       )
     }
   }
