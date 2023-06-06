@@ -65,7 +65,7 @@ a{text-decoration: none;}
 
 //snack bar
 .error.mat-snack-bar-container{background: #cc0000;color:#ffffff ;}
-.success.mat-snack-bar-container{background: #009b58;color:#ffffff ;}
+.success.mat-snack-bar-container{background: rgb(14, 114, 207);color:#ffffff ;}
 .info.mat-snack-bar-container{background: #fff265;color:#000000 ;}
 
 //nav bar
@@ -94,7 +94,7 @@ color: rgb(14, 114, 207);
   &:hover::before,&:focus::before
   { content: '';top: 0;right: 0;bottom: 0;left: 0;background: #6b5f5f2a;position: absolute;border-radius: 50%;}
 }
-.profile-photo img{height: 100%;}
+.profile-photo img{height: 100%;border-radius: 50%;width: 100%;max-width: 40px; max-height: 40px;}
 .profile-name h3{font-size: 16px;font-weight: 400;}
 .profile-name{padding: 8px 16px;}
 .more-setting{margin-left: auto;margin-right: 16px;}
@@ -123,17 +123,16 @@ color: rgb(14, 114, 207);
 .chat-boat{width: 100%;}
 //lsit
 .chart-button-list{
-  display: flex;
-  align-items: center;
-  padding: 4px 8px;
-}
+  display: flex;align-items: center;padding: 4px 8px;}
 .chat-list{
-  background-color: rgb(255, 255, 255);
-  min-height: 100vh;
-}
+  background-color: rgb(255, 255, 255);min-height: 100vh;}
 .user-list-last-time{margin-left: auto;}
 .user-chat-profile{padding: 4px 14px;height: 56px; width: 100%;}
 
+.myprofile-img{max-width: 300px;max-height: 300px;width: 100%;height: 100%;background: cornflowerblue;}
+.user-deatils p{font-size: 16px;padding: 8px 0px ;border-bottom: 1px solid  rgb(14, 114, 207);display: flex;}
+.user-deatils span{width: 100%;}
+.edit-my-profile{display: flex;justify-content: center;padding: 10px 0px;}
 /* Responsive Media Queries
 --------------------------------------------------------------------------------------------------------*/
 @media (max-width:1399px) { }
