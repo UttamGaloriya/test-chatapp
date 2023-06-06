@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { switchMap, tap } from 'rxjs/operators';
 import { AuthService } from 'src/app/services/auth.service';
+import { UsersService } from 'src/app/services/users.service';
 
 @Component({
   selector: 'app-form',
@@ -10,17 +12,28 @@ import { AuthService } from 'src/app/services/auth.service';
 export class FormComponent implements OnInit {
   form!: FormGroup
   seasons: string[] = ['male', 'female', 'other'];
-  constructor(private fb: FormBuilder, private auth: AuthService) { }
+  user$ = this.userservices.currentUserProfile$;
+  constructor(private fb: FormBuilder, private auth: AuthService, private userservices: UsersService) { }
 
   ngOnInit(): void {
     this.form = this.fb.group({
+      uid: [''],
       firstName: ['', [Validators.required, this.validateInput]],
       lastName: ['', [Validators.required, this.validateInput]],
       gender: ['', [Validators.required,]],
       userName: ['', [Validators.required, this.validateUser]],
-
-
     })
+
+
+    this.userservices.currentUserProfile$
+      .pipe(tap(console.log))
+      .subscribe((user) => {
+        console.log(user)
+        this.form.patchValue({ ...user });
+      });
+    this.user$.pipe().subscribe(
+      (user) => { console.log(user) }
+    )
   }
 
   validateInput(control: FormControl) {
@@ -54,18 +67,20 @@ export class FormComponent implements OnInit {
   get f(): { [key: string]: AbstractControl } { return this.form.controls; }
 
   onSubmit() {
+
+
+
+
     if (this.form.valid) {
       console.log(this.form.value);
-      this.auth.create(this.form.value).subscribe(
-        (data) => { console.log(data) },
-        (error) => { console.log(error) },
-        () => { console.log("complite") }
-      )
-
+      const { uid, ...data } = this.form.value;
+      if (!uid) {
+        return;
+      }
+      this.userservices.updateUser({ uid, ...data }).pipe().subscribe()
     } else {
       console.log("not valid")
     }
-
 
   }
   mydata() {
@@ -76,3 +91,6 @@ export class FormComponent implements OnInit {
     )
   }
 }
+
+
+

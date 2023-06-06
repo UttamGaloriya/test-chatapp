@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "skype-72562": {
+      "hosting": {
+        "skype": [
+          "skype-72562"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "skype-72562"
+  }
+}

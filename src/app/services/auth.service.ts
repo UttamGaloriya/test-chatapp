@@ -3,6 +3,9 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
 import { AuthResponse } from '../authResponse';
 import { Router } from '@angular/router';
+import { Auth, UserInfo, authState, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile, } from '@angular/fire/auth';
+import { from, of } from 'rxjs';
+import { concatMap } from 'rxjs/operators';
 
 
 @Injectable({
@@ -20,24 +23,49 @@ export class AuthService {
 
     return new HttpHeaders().set('Authorization', `Bearer ${d}`);
   }
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(private http: HttpClient, private router: Router, private afAuth: Auth) { }
+
+  // signUp(email: string, password: string) {
+  //   return this.http.post<AuthResponse>(`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBd2qrxKb-n2ZFfo1HiwtF96SBwyhaDrEw`,
+  //     {
+  //       email: email,
+  //       password: password,
+  //       returnSecureToken: true
+
+  //     });
+  // }
+  // signIn(email: string, password: string): Observable<any> {
+  //   return this.http.post(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBd2qrxKb-n2ZFfo1HiwtF96SBwyhaDrEw`,
+  //     {
+  //       email: email,
+  //       password: password,
+  //       returnSecureToken: true,
+  //     });
+  // }
+
+  currentUser$ = authState(this.afAuth);
+
+
+  signIn(email: string, password: string) {
+    return from(signInWithEmailAndPassword(this.afAuth, email, password))
+  }
 
   signUp(email: string, password: string) {
-    return this.http.post<AuthResponse>(`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBd2qrxKb-n2ZFfo1HiwtF96SBwyhaDrEw`,
-      {
-        email: email,
-        password: password,
-        returnSecureToken: true
-
-      });
+    return from(createUserWithEmailAndPassword(this.afAuth, email, password))
   }
-  signIn(email: string, password: string): Observable<any> {
-    return this.http.post(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBd2qrxKb-n2ZFfo1HiwtF96SBwyhaDrEw`,
-      {
-        email: email,
-        password: password,
-        returnSecureToken: true,
-      });
+
+  updateProfileData(profileData: Partial<UserInfo>): Observable<any> {
+    const user = this.afAuth.currentUser;
+    return of(user).pipe(
+      concatMap((user) => {
+        if (!user) throw new Error('Not Authenticated');
+        return updateProfile(user, profileData);
+      })
+    );
+  }
+
+  logout() {
+    return from(this.afAuth.signOut());
   }
 
   //crud operatoin
@@ -63,10 +91,6 @@ export class AuthService {
       localStorage.setItem('DataToken', JSON.stringify(data))
     }
   }
-
-
-
-
 
   setToken() {
     localStorage.setItem('token', 'data')

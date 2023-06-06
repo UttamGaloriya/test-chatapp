@@ -45,10 +45,6 @@
             </mat-radio-group>
 
 
-
-
-
-
             <!-- button  -->
 
             <div class="button-box">
@@ -59,4 +55,9 @@
         </form>
     </mat-card>
     <button type="button" (click)="mydata()">task</button>
+    <div *ngIf="user$ | async as user">
+        {{user.uid}}
+        {{user.firstName}}
+        {{user.userName}}
+    </div>
 </div>

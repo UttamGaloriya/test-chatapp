@@ -28,7 +28,7 @@ import { ChatuserlistComponent } from './chatuserlist/chatuserlist.component';
     CommonModule,
     HomeRoutingModule,
     MatmodualsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ]
 })
 export class HomeModule { }

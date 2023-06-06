@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { User } from 'firebase/auth';
+import { concatMap } from 'rxjs/operators';
 import { AuthService } from 'src/app/services/auth.service';
+import { ImageService } from 'src/app/services/image.service';
 
 @Component({
   selector: 'app-navbar',
@@ -7,12 +10,21 @@ import { AuthService } from 'src/app/services/auth.service';
   styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent implements OnInit {
-
-  constructor(private authservices: AuthService) { }
+  user$ = this.authservices.currentUser$
+  constructor(private authservices: AuthService, private imgservices: ImageService) { }
 
   ngOnInit(): void {
+    this.user$.pipe().subscribe(
+      (user) => console.log(user)
+    )
   }
   logout() {
     this.authservices.removeToken()
+  }
+  uploadImage(event: any, user: User) {
+    this.imgservices.uploadImage(event.target.files[0], `images/profile/${user.uid}`).pipe(
+      concatMap((photoURL) =>
+        this.authservices.updateProfileData({ photoURL })
+      )).subscribe()
   }
 }

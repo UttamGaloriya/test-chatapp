@@ -26,14 +26,15 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.valid) {
       this.authServices.signIn(this.loginForm.value.email, this.loginForm.value.password).subscribe(
         (res) => {
-          console.log(res), alert("login done"), this.notification.showNotification("login Successful", "ok", "success"),
-            this.authServices.setToken(),
-            this.authServices.sotreDataToken(res.idToken)
+          this.router.navigateByUrl('/')
+          console.log(res),
+            alert("login done")
         },
         (err) => { console.log(err), this.notification.showNotification("Something wrong plese try again", "ok", "error") },
         () => {
+          this.authServices.setToken()
           console.log("login complite"),
-            this.router.navigateByUrl('')
+            this.notification.showNotification("login Successful", "ok", "success")
         }
       )
     }
