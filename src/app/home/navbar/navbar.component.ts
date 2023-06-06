@@ -3,6 +3,10 @@ import { User } from 'firebase/auth';
 import { concatMap } from 'rxjs/operators';
 import { AuthService } from 'src/app/services/auth.service';
 import { ImageService } from 'src/app/services/image.service';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
+import { FormComponent } from '../form/form.component';
+import { NotificationService } from 'src/app/services/notification.service';
 
 @Component({
   selector: 'app-navbar',
@@ -11,7 +15,9 @@ import { ImageService } from 'src/app/services/image.service';
 })
 export class NavbarComponent implements OnInit {
   user$ = this.authservices.currentUser$
-  constructor(private authservices: AuthService, private imgservices: ImageService) { }
+  constructor(private authservices: AuthService, private imgservices: ImageService, public dialog: MatDialog,
+    private notification: NotificationService
+  ) { }
 
   ngOnInit(): void {
     this.user$.pipe().subscribe(
@@ -25,6 +31,11 @@ export class NavbarComponent implements OnInit {
     this.imgservices.uploadImage(event.target.files[0], `images/profile/${user.uid}`).pipe(
       concatMap((photoURL) =>
         this.authservices.updateProfileData({ photoURL })
-      )).subscribe()
+      )).subscribe(
+        (data) => { }
+      )
+  }
+  Myprofile() {
+    this.dialog.open(FormComponent)
   }
 }

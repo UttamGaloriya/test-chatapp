@@ -1,8 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { switchMap, tap } from 'rxjs/operators';
+import { concatMap, switchMap, tap } from 'rxjs/operators';
 import { AuthService } from 'src/app/services/auth.service';
 import { UsersService } from 'src/app/services/users.service';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
+import { ImageService } from 'src/app/services/image.service';
+import { User } from 'firebase/auth';
+import { NotificationService } from 'src/app/services/notification.service';
 
 @Component({
   selector: 'app-form',
@@ -13,7 +18,14 @@ export class FormComponent implements OnInit {
   form!: FormGroup
   seasons: string[] = ['male', 'female', 'other'];
   user$ = this.userservices.currentUserProfile$;
-  constructor(private fb: FormBuilder, private auth: AuthService, private userservices: UsersService) { }
+  useruserphoto$ = this.auth.currentUser$;
+  editProfile: boolean = true
+  constructor(private fb: FormBuilder,
+    private auth: AuthService,
+    private userservices: UsersService,
+    private imageservice: ImageService,
+    private notification: NotificationService,
+  ) { }
 
   ngOnInit(): void {
     this.form = this.fb.group({
@@ -31,9 +43,7 @@ export class FormComponent implements OnInit {
         console.log(user)
         this.form.patchValue({ ...user });
       });
-    this.user$.pipe().subscribe(
-      (user) => { console.log(user) }
-    )
+    this.user$.pipe().subscribe()
   }
 
   validateInput(control: FormControl) {
@@ -67,17 +77,16 @@ export class FormComponent implements OnInit {
   get f(): { [key: string]: AbstractControl } { return this.form.controls; }
 
   onSubmit() {
-
-
-
-
     if (this.form.valid) {
       console.log(this.form.value);
       const { uid, ...data } = this.form.value;
       if (!uid) {
         return;
       }
-      this.userservices.updateUser({ uid, ...data }).pipe().subscribe()
+      this.userservices.updateUser({ uid, ...data }).pipe().subscribe(
+        (user) => { console.log(user), this.notification.showNotification("Data Update Sucessfuly", '', 'success') }
+      )
+      this.editProfile = !this.editProfile
     } else {
       console.log("not valid")
     }
@@ -89,6 +98,19 @@ export class FormComponent implements OnInit {
       (error) => { console.log(error) },
       () => { console.log("complite") }
     )
+  }
+
+  onEditProfile() {
+    this.editProfile = !this.editProfile
+  }
+
+  uploadImage(event: any, user: User) {
+    this.imageservice.uploadImage(event.target.files[0], `images/profile/${user.uid}`).pipe(
+      concatMap((photoURL) =>
+        this.auth.updateProfileData({ photoURL })
+      )).subscribe(
+        (data) => { this.notification.showNotification("Image Update Sucessfuly", '', 'success') }
+      )
   }
 }
 

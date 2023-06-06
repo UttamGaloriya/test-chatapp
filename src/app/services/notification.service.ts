@@ -10,7 +10,7 @@ export class NotificationService {
 
   showNotification(displayMessage: string, buttonText: string, messageType: 'error' | 'success' | 'info') {
     this.snackbar.open(displayMessage, buttonText, {
-      duration: 2000,
+      duration: 5000,
       horizontalPosition: 'center',
       verticalPosition: 'top',
       panelClass: messageType

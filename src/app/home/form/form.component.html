@@ -1,5 +1,5 @@
 <div class="form-container">
-    <mat-card>
+    <mat-card *ngIf="!editProfile">
         <form [formGroup]="form" (ngSubmit)="onSubmit()">
             <!--  first  name  -->
             <mat-form-field appearance="outline" class="max-100">
@@ -54,10 +54,32 @@
 
         </form>
     </mat-card>
-    <button type="button" (click)="mydata()">task</button>
+
+    <mat-card *ngIf="editProfile">
+
+        <div class='profile-img-dailog'>
+            <button class="" (click)="inputFiled.click()" *ngIf="useruserphoto$ | async as userphoto">
+
+                <img [src]="userphoto.photoURL ?? './assets/images/profile-daliog.png'" alt="g" class="myprofile-img">
+                <input type="file" hidden #inputFiled (change)="uploadImage($event ,userphoto)">
+            </button>
+
+        </div>
+
+        <div class="user-deatils" *ngIf="user$ | async as user">
+            <p><span>Name</span><span class="user-deatils-data">{{user.firstName}} {{user.lastName}}</span> </p>
+            <p><span>UserName</span> <span class="user-deatils-data">{{user.userName}}</span> </p>
+            <p><span>Email</span> <span class="user-deatils-data">{{user.email}}</span></p>
+            <p><span>Gender</span> <span class="user-deatils-data">{{user.gender}}</span></p>
+        </div>
+        <div class="edit-my-profile">
+            <button mat-flat-button color="primary" (click)="onEditProfile()">Edit Profile</button>
+        </div>
+    </mat-card>
+    <!-- <button type="button" (click)="mydata()">task</button>
     <div *ngIf="user$ | async as user">
         {{user.uid}}
         {{user.firstName}}
         {{user.userName}}
-    </div>
+    </div> -->
 </div>
