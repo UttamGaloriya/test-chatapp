@@ -58,10 +58,10 @@
     <mat-card *ngIf="editProfile">
 
         <div class='profile-img-dailog'>
-            <button class="" (click)="inputFiled.click()" *ngIf="useruserphoto$ | async as userphoto">
+            <button class="" (click)="inputFiled.click()" *ngIf="user$ | async as user">
 
-                <img [src]="userphoto.photoURL ?? './assets/images/profile-daliog.png'" alt="g" class="myprofile-img">
-                <input type="file" hidden #inputFiled (change)="uploadImage($event ,userphoto)">
+                <img [src]="user.photoURL ?? './assets/images/profile-daliog.png'" alt="g" class="myprofile-img">
+                <input type="file" hidden #inputFiled (change)="uploadImage($event , user)">
             </button>
 
         </div>

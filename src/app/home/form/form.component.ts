@@ -8,6 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { ImageService } from 'src/app/services/image.service';
 import { User } from 'firebase/auth';
 import { NotificationService } from 'src/app/services/notification.service';
+import { UserProfile } from 'src/app/user-profile';
 
 @Component({
   selector: 'app-form',
@@ -17,8 +18,10 @@ import { NotificationService } from 'src/app/services/notification.service';
 export class FormComponent implements OnInit {
   form!: FormGroup
   seasons: string[] = ['male', 'female', 'other'];
+
   user$ = this.userservices.currentUserProfile$;
-  useruserphoto$ = this.auth.currentUser$;
+  // useruserphoto$ = this.auth.currentUser$;
+
   editProfile: boolean = true
   constructor(private fb: FormBuilder,
     private auth: AuthService,
@@ -104,10 +107,10 @@ export class FormComponent implements OnInit {
     this.editProfile = !this.editProfile
   }
 
-  uploadImage(event: any, user: User) {
-    this.imageservice.uploadImage(event.target.files[0], `images/profile/${user.uid}`).pipe(
-      concatMap((photoURL) =>
-        this.auth.updateProfileData({ photoURL })
+  uploadImage(event: any, user: UserProfile) {
+    this.imageservice.uploadImage(event.target.files[0], `images/profile/${user?.uid}`).pipe(
+      switchMap((photoURL) =>
+        this.userservices.updateUser({ uid: user?.uid, photoURL }),
       )).subscribe(
         (data) => { this.notification.showNotification("Image Update Sucessfuly", '', 'success') }
       )

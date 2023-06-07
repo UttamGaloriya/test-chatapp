@@ -1,9 +1,9 @@
 <div class="chat-room">
-    <div class="chat-room-header">
+    <div class="chat-room-header" *ngIf="cureentUser$  |async as user">
         <button class="user-chat-profile">
-            <img src="./assets/images/user-profile.png" alt="profile-img" class="chat-profile-img">
+            <img [src]="user.chatPic ??'./assets/images/user-profile.png'" alt="profile-img" class="chat-profile-img">
             <div class="chat-user-name">
-                <p class="chat-user-name-heading">user_chat_profile name</p>
+                <p class="chat-user-name-heading">{{user.chatName}}</p>
                 <span>Active now</span>
             </div>
         </button>
@@ -20,5 +20,22 @@
             class="chat-voice-call call">
             <mat-icon>call</mat-icon>
         </button>
+    </div>
+    <div class="chat-room-content" *ngIf="message$ |async as msg">
+        <div *ngFor="let message of msg">
+
+            <li>{{message.text}}</li>
+        </div>
+
+
+    </div>
+    <div class="input-area">
+        <mat-form-field appearance="outline" class="max-100">
+            <input matInput placeholder="Enter your message..." [formControl]="messageControl"
+                (keydown.enter)="sendMessage()" />
+            <button mat-icon-button matSuffix (click)="sendMessage()">
+                <mat-icon>send</mat-icon>
+            </button>
+        </mat-form-field>
     </div>
 </div>

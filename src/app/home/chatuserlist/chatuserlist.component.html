@@ -1,23 +1,44 @@
-<div class="chat-list">
-
-    <button class="user-chat-profile chart-button-list">
-        <img src="./assets/images/user-profile.png" alt="profile-img" class="chat-profile-img">
-        <div class="chat-user-name">
-            <p class="chat-user-name-heading">user_chat_profile name</p>
-            <span>Active now</span>
-        </div>
-        <p class="user-list-last-time">
-            last
-        </p>
-    </button>
-    <button class="user-chat-profile chart-button-list">
-        <img src="./assets/images/user-profile.png" alt="profile-img" class="chat-profile-img">
-        <div class="chat-user-name">
-            <p class="chat-user-name-heading">user_chat_profile name</p>
-            <span>Active now</span>
-        </div>
-        <p class="user-list-last-time">
-            last
-        </p>
-    </button>
+<div class="search-list">
+    <div class="search-div">
+        <mat-form-field appearance="standard" class="max-100">
+            <input matInput [formControl]="searchControl" placeholder="user search" [matAutocomplete]="autouser">
+        </mat-form-field>
+        <mat-autocomplete #autouser="matAutocomplete">
+            <mat-option *ngFor="let user of   users$ | async" [value]="user?.userName ?? user?.email"
+                (click)="createChat(user)">
+                {{user?.userName ?? user?.email}}
+            </mat-option>
+        </mat-autocomplete>
+        <button mat-button matSuffix mat-icon-button aria-label="Clear" (click)="onSearchClear()">Clear</button>
+    </div>
 </div>
+
+<div class="chat-list">
+    <mat-selection-list [formControl]="chatListControl" [multiple]="false">
+        <mat-list-option *ngFor="let user of mychat$ |async " [value]="user.id">
+            <button class="user-chat-profile chart-button-list" (click)=" selectUser(user.id)">
+                <img [src]="user.chatPic ??'./assets/images/user-profile.png'" alt="profile-img"
+                    class="chat-profile-img">
+                <div class="chat-user-name">
+                    <p class="chat-user-name-heading">{{user.chatName}}</p>
+                    <span>Active now</span>
+                </div>
+                <p class="user-list-last-time">
+                    last
+                </p>
+            </button>
+        </mat-list-option>
+    </mat-selection-list>
+</div>
+
+
+<!-- <button class="user-chat-profile chart-button-list" *ngIf="selectedChat$ |async as user">
+    <img [src]="user.chatPic ??'./assets/images/user-profile.png'" alt="profile-img" class="chat-profile-img">
+    <div class="chat-user-name">
+        <p class="chat-user-name-heading">{{user.chatName}}</p>
+        <span>Active now</span>
+    </div>
+    <p class="user-list-last-time">
+        last
+    </p>
+</button> -->

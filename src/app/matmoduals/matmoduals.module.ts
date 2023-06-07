@@ -14,6 +14,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatListModule } from '@angular/material/list';
 
 
 
@@ -31,7 +33,9 @@ const data = [
   MatCardModule,
   MatSnackBarModule,
   MatMenuModule,
-  MatPaginatorModule
+  MatPaginatorModule,
+  MatAutocompleteModule,
+  MatListModule
 ];
 
 @NgModule({

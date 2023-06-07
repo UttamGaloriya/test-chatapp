@@ -7,6 +7,7 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { FormComponent } from '../form/form.component';
 import { NotificationService } from 'src/app/services/notification.service';
+import { UsersService } from 'src/app/services/users.service';
 
 @Component({
   selector: 'app-navbar',
@@ -14,15 +15,14 @@ import { NotificationService } from 'src/app/services/notification.service';
   styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent implements OnInit {
-  user$ = this.authservices.currentUser$
+  // user$ = this.authservices.currentUser$
+  user$ = this.userservices.currentUserProfile$;
   constructor(private authservices: AuthService, private imgservices: ImageService, public dialog: MatDialog,
-    private notification: NotificationService
+    private notification: NotificationService, private userservices: UsersService
   ) { }
 
   ngOnInit(): void {
-    this.user$.pipe().subscribe(
-      (user) => console.log(user)
-    )
+
   }
   logout() {
     this.authservices.removeToken()

@@ -1,13 +1,9 @@
 <div class="navbar" *ngIf="user$ | async as user">
-    <!-- <button class="profile-photo" (click)="inputFiled.click()">
-        <img [src]="user.photoURL ?? '/assets/images/user-profile.png '" alt="profile-photo">
-        <input type="file" hidden #inputFiled (change)="uploadImage($event ,user)">
-    </button>  -->
     <button class="profile-photo" (click)="Myprofile()">
         <img [src]="user.photoURL ?? '/assets/images/user-profile.png '" alt="profile-photo">
     </button>
     <div class="profile-name">
-        <h3>{{user.email}}</h3>
+        <h3>{{user.userName ?? user.email}}</h3>
         <button class="set-status">Set status</button>
     </div>
     <div class="more-setting">
