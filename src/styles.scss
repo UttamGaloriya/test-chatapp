@@ -113,23 +113,58 @@ color: rgb(14, 114, 207);
 .chat-user-name{padding: 0px 12px;text-align: start;font-size: 12px;}
 .chat-user-name-heading{font-size: 16px; line-height: 20px;}
 .user-chat-profile .chat-room-name span{margin-top: 8px;}
-.chat-profile-img{height: 40px;width: 40px;}
+.chat-profile-img{height: 40px;width: 40px; border: 1px solid #c5e7e7;border-radius: 50%;}
 .chat-room .user-chat-search{margin-left: auto;}
 .chat-room .chat-video-call{margin: 0 16px 0;}
 
 .chat-room{height: 100%;}
-.chat-room .chat-room-content{height: calc(100% - 106px );}
-.chat-room .input-area{height:50px;width: 100%;}
-
+.chat-room .chat-room-content{height: calc(100% - 155px );padding: 10px 24px;background: #fff;  overflow-y: auto;}
+.chat-room .input-area{width: 100%;}
+.chat-span-active-user{
+  background: #ccf7ff;
+  padding: 10px 37px 30px 10px;
+  border-radius: 10px 10px 0 10px;
+  margin-left: auto;
+  max-width: 70%;
+  text-align: justify;
+  position: relative;
+}
+.chat-span-other-user{
+  background: #f1f1f1;
+  padding: 10px 37px 30px 10px;
+  border-radius: 0px 10px 10px;
+  max-width: 70%;
+  text-align: justify;
+  position: relative;
+}
+.chat-span-li{
+  margin: 30px 0;
+  display: flex;
+  font-size: 14px;
+  line-height: 22px;
+  letter-spacing: -0.2px
+}
+.sentdate{
+  font-size: 12px;
+  position: absolute;
+  top: -20px;
+  left: 0px;
+}
+// .text-chat{margin: auto;}
+.chat-span-active-user .sentdate{right: 0px;left: auto;}
+.chat-room .mat-form-field-appearance-outline .mat-form-field-wrapper {margin: 0 0;}
+.chat-room .mat-form-field-wrapper {padding-bottom: 0;}
+.chat-room li{list-style: none;}
+.chat-span-user{display: flex;align-items: end;}
 //home-page
-.home-page-window{display: flex;width: 100%;}
+.home-page-window{display: flex;width: 100%;height: 100vh;}
 .chat-list{width: 322px;flex-grow: 0;flex-shrink: 0;}
 .chat-boat{width: 100%;}
 //lsit
 .chart-button-list{
   display: flex;align-items: center;padding: 4px 8px;}
 .chat-list{
-  background-color: rgb(255, 255, 255);height: 100%;}
+  background-color: rgb(255, 255, 255);}
 .user-list-last-time{margin-left: auto;}
 .user-chat-profile{padding: 4px 14px;height: 56px; width: 100%;}
 
@@ -144,5 +179,11 @@ color: rgb(14, 114, 207);
 @media (max-width:1399px) { }
 @media (max-width:1199px) { }
 @media (max-width:991px) { }
-@media (max-width:767px) { }
+@media (max-width:767px) {
+.chat-boat{display: none;}
+.chat-list{width: 100%;}
+.hide .chat-list{display: none;}
+.hide .chat-boat{display: block;}
+
+ }
 @media (max-width:575px) { }

@@ -1,5 +1,8 @@
-<div class="chat-room">
-    <div class="chat-room-header" *ngIf="cureentUser$  |async as user">
+<div class="chat-room" *ngIf="cureentUser$  |async as user">
+    <div class="chat-room-header">
+        <button mat-icon-button color="primary" aria-label="Example icon button with a home icon" (click)="chatClose()">
+            <mat-icon>keyboard_backspace</mat-icon>
+        </button>
         <button class="user-chat-profile">
             <img [src]="user.chatPic ??'./assets/images/user-profile.png'" alt="profile-img" class="chat-profile-img">
             <div class="chat-user-name">
@@ -12,22 +15,28 @@
             <mat-icon>search</mat-icon>
         </button>
 
-        <button mat-mini-fab color="primary" aria-label="Example icon button with a filter list icon"
+        <!-- <button mat-mini-fab color="primary" aria-label="Example icon button with a filter list icon"
             class="chat-video-call call">
             <mat-icon>videocam</mat-icon>
         </button>
         <button mat-mini-fab color="primary" aria-label="Example icon button with a filter list icon"
             class="chat-voice-call call">
             <mat-icon>call</mat-icon>
-        </button>
+        </button> -->
     </div>
+    <!-- <div class="text-chat"> -->
     <div class="chat-room-content" *ngIf="message$ |async as msg">
         <div *ngFor="let message of msg">
-
-            <li>{{message.text}}</li>
+            <div class="chat-span-li" *ngIf="authUser$ |async as auth">
+                <div class="chat-span-user"
+                    [ngClass]="{'chat-span-active-user' : auth.uid==message.senderId ,'chat-span-other-user':auth.uid!==message.senderId }">
+                    {{message.text}}
+                    <div class="sentdate">{{message.sentDate | dateDisplay }}</div>
+                </div>
+            </div>
         </div>
 
-
+        <div #endOfChat></div>
     </div>
     <div class="input-area">
         <mat-form-field appearance="outline" class="max-100">
@@ -39,3 +48,4 @@
         </mat-form-field>
     </div>
 </div>
+<!-- </div> -->
