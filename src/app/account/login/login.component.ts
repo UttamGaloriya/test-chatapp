@@ -12,12 +12,14 @@ import { NotificationService } from 'src/app/services/notification.service';
 export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
   hide = false
+  err: any
+  emailRegx = /^(([^<>+()\[\]\\.,;:\s@"-#$%&=]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,3}))$/;
   constructor(private fb: FormBuilder, private authServices: AuthService, private router: Router, private notification: NotificationService) { }
 
   ngOnInit(): void {
     this.loginForm = this.fb.group({
-      email: ['', [Validators.required,]],
-      password: ['', [Validators.required,]]
+      email: ['', [Validators.required, Validators.pattern(this.emailRegx)]],
+      password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(40), Validators.pattern(/^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/)]]
     })
   }
 
@@ -30,7 +32,7 @@ export class LoginComponent implements OnInit {
           console.log(res),
             alert("login done")
         },
-        (err) => { console.log(err), this.notification.showNotification("Something wrong plese try again", "ok", "error") },
+        (err) => { this.err = err, console.log(this.err), this.notification.showNotification("Something wrong plese try again", "ok", "error") },
         () => {
           this.authServices.setToken()
           console.log("login complite"),
@@ -39,40 +41,7 @@ export class LoginComponent implements OnInit {
       )
     }
   }
-  //valdtion
-  validateInput(control: FormControl) {
-    const emailRegx =
-      /^(([^<>+()\[\]\\.,;:\s@"-#$%&=]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,3}))$/;
-    const trimmedValue = control.value.trim();
-    if (trimmedValue === '') {
-      return { spacesOnly: true };
-    }
-    if (emailRegx.test(trimmedValue)) {
-      return { invalidInput: true };
-    }
-    if (trimmedValue !== control.value) {
-      control.setValue(trimmedValue);
-    }
-    return null;
-  }
 
-  validatePassword(control: FormControl) {
-    const passwordRegx = /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/
-    const trimmedValue = control.value.trim();
-    if (trimmedValue === '') {
-      return { spacesOnly: true };
-    }
-    if (passwordRegx.test(trimmedValue)) {
-      return { invalidInput: true };
-    }
-    if (trimmedValue.length <= 8) {
-      return { passLength: true }
-    }
-    if (trimmedValue !== control.value) {
-      control.setValue(trimmedValue);
-    }
-    return null;
-  }
 
 
 }

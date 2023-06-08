@@ -12,6 +12,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ChatroomComponent } from './chatroom/chatroom.component';
 import { ChatuserlistComponent } from './chatuserlist/chatuserlist.component';
 import { DateDisplayPipe } from '../pipe/date-display.pipe';
+import { TextlengthPipe } from '../pipe/textlength.pipe';
+import { ChatDatePipe } from '../pipe/chat-date.pipe';
 
 
 
@@ -24,7 +26,9 @@ import { DateDisplayPipe } from '../pipe/date-display.pipe';
     FormComponent,
     ChatroomComponent,
     ChatuserlistComponent,
-    DateDisplayPipe
+    DateDisplayPipe,
+    TextlengthPipe,
+    ChatDatePipe,
   ],
   imports: [
     CommonModule,

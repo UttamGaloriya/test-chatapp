@@ -21,12 +21,15 @@ import { providePerformance, getPerformance } from '@angular/fire/performance';
 import { provideRemoteConfig, getRemoteConfig } from '@angular/fire/remote-config';
 import { provideStorage, getStorage } from '@angular/fire/storage';
 import { DatePipe } from '@angular/common';
+import { TextlengthPipe } from './pipe/textlength.pipe';
+
 
 // import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 
 @NgModule({
   declarations: [
     AppComponent,
+
 
 
   ],

@@ -2,6 +2,8 @@
     <div class="search-div">
         <mat-form-field appearance="standard" class="max-100">
             <input matInput [formControl]="searchControl" placeholder="user search" [matAutocomplete]="autouser">
+            <button mat-button matSuffix mat-icon-button aria-label="Clear"
+                (click)="onSearchClear()"><mat-icon>close</mat-icon></button>
         </mat-form-field>
         <mat-autocomplete #autouser="matAutocomplete">
             <mat-option *ngFor="let user of   users$ | async" [value]="user?.userName ?? user?.email"
@@ -9,7 +11,6 @@
                 {{user?.userName ?? user?.email}}
             </mat-option>
         </mat-autocomplete>
-        <button mat-button matSuffix mat-icon-button aria-label="Clear" (click)="onSearchClear()">Clear</button>
     </div>
 </div>
 
@@ -21,7 +22,7 @@
                     class="chat-profile-img">
                 <div class="chat-user-name">
                     <p class="chat-user-name-heading">{{user.chatName}}</p>
-                    <span>{{user.lastMessage}}</span>
+                    <span>{{user.lastMessage | textlength:10}}</span>
                 </div>
                 <p class="user-list-last-time">
                     {{user.lastMessageDate | dateDisplay}}

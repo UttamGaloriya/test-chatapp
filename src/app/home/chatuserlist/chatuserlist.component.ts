@@ -30,9 +30,7 @@ export class ChatuserlistComponent implements OnInit {
   constructor(private useServices: UsersService, private authServices: AuthService, private chatServices: ChatService) { }
 
   ngOnInit(): void {
-    this.mychat$.subscribe(
-      (mychat) => { console.log(mychat) }
-    )
+    // this.mychat$.subscribe( )
   }
   onSearchClear() {
     this.searchControl = new FormControl('')

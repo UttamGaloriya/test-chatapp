@@ -2,7 +2,7 @@
     <mat-card *ngIf="!editProfile">
         <form [formGroup]="form" (ngSubmit)="onSubmit()">
             <!--  first  name  -->
-            <mat-form-field appearance="outline" class="max-100">
+            <mat-form-field appearance="standard" class="max-100">
                 <mat-label>First Name</mat-label>
                 <input matInput formControlName="firstName">
                 <mat-error *ngIf="f.firstName.touched && f.firstName.errors?.required">Enter Your First Name</mat-error>
@@ -12,7 +12,7 @@
                     characters</mat-error>
             </mat-form-field>
             <!-- last name  -->
-            <mat-form-field appearance="outline" class="max-100">
+            <mat-form-field appearance="standard" class="max-100">
                 <mat-label>Last Name</mat-label>
                 <input matInput formControlName="lastName">
                 <mat-error *ngIf="f.lastName.touched && f.lastName.errors?.required">Enter Your Last Name</mat-error>
@@ -22,7 +22,7 @@
                     characters</mat-error>
             </mat-form-field>
             <!-- user name  -->
-            <mat-form-field appearance="outline" class="max-100">
+            <mat-form-field appearance="standard" class="max-100">
                 <mat-label>User Name</mat-label>
                 <input matInput formControlName="userName">
                 <mat-error *ngIf="f.userName.touched && f.userName.errors?.required">Enter Your Name</mat-error>

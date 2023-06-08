@@ -9,26 +9,41 @@
                 <mat-card-title> Create account </mat-card-title>
                 <mat-card-subtitle>to continue to Skype</mat-card-subtitle>
             </mat-card-header>
+            <div *ngIf="err" class="err">{{err}}</div>
+
             <form (ngSubmit)="signup()" [formGroup]="signupForm" class="form">
 
                 <mat-form-field class="input-box">
                     <mat-label>Email</mat-label>
                     <input matInput placeholder="pat@example.com" formControlName="email">
                     <mat-error *ngIf="signupForm.controls.email.errors && signupForm.controls.email.touched">
-                        Enter Email
+                        <mat-error *ngIf="signupForm.controls.email.errors.required">Enter your Email
+                            Address</mat-error>
+                        <mat-error *ngIf="signupForm.controls.email.errors.pattern">Enter a Valid Email
+                            Address</mat-error>
                     </mat-error>
                 </mat-form-field>
 
+                <br>
                 <mat-form-field class="input-box">
                     <mat-label>Password</mat-label>
                     <input matInput [type]="hide ? 'password' : 'text'" formControlName="password">
                     <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
                         [attr.aria-pressed]="hide" type="button">
                         <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-                        <mat-error *ngIf="signupForm.controls.password.errors && signupForm.controls.password.touched">
-                            Enter Password
-                        </mat-error>
                     </button>
+
+                    <mat-error *ngIf="signupForm.controls.password.errors">
+                        <mat-error *ngIf="signupForm.controls.password.errors.required">Enter your Password</mat-error>
+                        <mat-error *ngIf="signupForm.controls.password.errors.minlength ">Minmum leangth 8
+                            Digit</mat-error>
+                        <mat-error
+                            *ngIf="signupForm.controls.password.errors.maxlength && !signupForm.controls.password.errors.minlength">Max
+                            leangth 40 Digit</mat-error>
+                        <mat-error
+                            *ngIf="signupForm.controls.password.errors.pattern && !signupForm.controls.password.errors.minlength ">password
+                            lowercase,uppercase,number and Special characters</mat-error>
+                    </mat-error>
                 </mat-form-field>
 
                 <P class="account-link">Already Register ?<a routerLink="/account/login"> Go to login</a></P>
