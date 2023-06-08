@@ -1,19 +1,20 @@
 <div class="chat-room" *ngIf="cureentUser$  |async as user">
     <div class="chat-room-header">
-        <button mat-icon-button color="primary" aria-label="Example icon button with a home icon" (click)="chatClose()">
+        <button mat-icon-button color="primary" aria-label="Example icon button with a home icon" (click)="chatClose()"
+            class="mobile-view-button">
             <mat-icon>keyboard_backspace</mat-icon>
         </button>
         <button class="user-chat-profile">
-            <img [src]="user.chatPic ??'./assets/images/user-profile.png'" alt="profile-img" class="chat-profile-img">
+            <img [src]="user.chatPic ?? './assets/images/user-profile.png'" alt="profile-img" class="chat-profile-img">
             <div class="chat-user-name">
                 <p class="chat-user-name-heading">{{user.chatName}}</p>
                 <span>Active now</span>
             </div>
         </button>
-        <button mat-icon-button color="primary" aria-label="Example icon button with a home icon"
+        <!-- <button mat-icon-button color="primary" aria-label="Example icon button with a home icon"
             class="user-chat-search">
             <mat-icon>search</mat-icon>
-        </button>
+        </button> -->
 
         <!-- <button mat-mini-fab color="primary" aria-label="Example icon button with a filter list icon"
             class="chat-video-call call">
@@ -25,24 +26,36 @@
         </button> -->
     </div>
     <!-- <div class="text-chat"> -->
-    <div class="chat-room-content" *ngIf="message$ |async as msg">
-        <div *ngFor="let message of msg">
-            <div class="chat-span-li" *ngIf="authUser$ |async as auth">
-                <div class="chat-span-user"
-                    [ngClass]="{'chat-span-active-user' : auth.uid==message.senderId ,'chat-span-other-user':auth.uid!==message.senderId }">
-                    {{message.text}}
-                    <div class="sentdate">{{message.sentDate | dateDisplay }}</div>
+    <div class="chat-room-content">
+        <ng-container *ngIf="message$ |async as msg">
+
+            <div *ngFor="let message of msg">
+
+                <!-- <div class="history-date">
+                    {{newDateMsg(message.sentDate|chatDate)==true? '{{message.sentDate}}':''}}
+              
+                </div> -->
+
+
+                <div class="chat-span-li" *ngIf="authUser$ |async as auth">
+                    <div class="chat-span-user"
+                        [ngClass]="{'chat-span-active-user' : auth.uid==message.senderId ,'chat-span-other-user':auth.uid!==message.senderId }">
+                        {{message.text}}
+                        <div class="sentdate">{{message.sentDate | dateDisplay }}</div>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div #endOfChat></div>
+            <div #endOfChat></div>
+        </ng-container>
     </div>
     <div class="input-area">
         <mat-form-field appearance="outline" class="max-100">
-            <input matInput placeholder="Enter your message..." [formControl]="messageControl"
-                (keydown.enter)="sendMessage()" />
-            <button mat-icon-button matSuffix (click)="sendMessage()">
+            <input matInput [formControl]="messageControl" placeholder="Enter your message..."
+                (keydown.enter)="sendMessage()">
+            <!-- <input matInput placeholder="Enter your message..." [formControl]="messageControl"
+                (keydown.enter)="sendMessage()" /> -->
+            <button mat-icon-button matSuffix (click)="sendMessage()" type="button">
                 <mat-icon>send</mat-icon>
             </button>
         </mat-form-field>
