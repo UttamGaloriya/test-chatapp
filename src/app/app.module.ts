@@ -20,12 +20,14 @@ import { provideMessaging, getMessaging } from '@angular/fire/messaging';
 import { providePerformance, getPerformance } from '@angular/fire/performance';
 import { provideRemoteConfig, getRemoteConfig } from '@angular/fire/remote-config';
 import { provideStorage, getStorage } from '@angular/fire/storage';
+import { DatePipe } from '@angular/common';
 
 // import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 
 @NgModule({
   declarations: [
     AppComponent,
+
 
   ],
   imports: [
@@ -48,7 +50,7 @@ import { provideStorage, getStorage } from '@angular/fire/storage';
 
   ],
   providers: [
-    ScreenTrackingService, UserTrackingService
+    ScreenTrackingService, UserTrackingService, DatePipe
   ],
   bootstrap: [AppComponent]
 })

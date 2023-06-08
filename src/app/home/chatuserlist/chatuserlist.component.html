@@ -21,10 +21,10 @@
                     class="chat-profile-img">
                 <div class="chat-user-name">
                     <p class="chat-user-name-heading">{{user.chatName}}</p>
-                    <span>Active now</span>
+                    <span>{{user.lastMessage}}</span>
                 </div>
                 <p class="user-list-last-time">
-                    last
+                    {{user.lastMessageDate | dateDisplay}}
                 </p>
             </button>
         </mat-list-option>

@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { UserProfile } from 'src/app/user-profile';
-import { combineLatest } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
+import { combineLatest, of } from 'rxjs';
+import { map, startWith, switchMap } from 'rxjs/operators';
 import { AuthService } from 'src/app/services/auth.service';
 import { UsersService } from 'src/app/services/users.service';
 import { ChatService } from 'src/app/services/chat.service';
@@ -38,12 +38,32 @@ export class ChatuserlistComponent implements OnInit {
     this.searchControl = new FormControl('')
 
   }
-  createChat(data: UserProfile) {
-    this.chatServices.createChat(data).subscribe()
+  // createChat(data: UserProfile) {
+  //   this.chatServices.createChat(data).subscribe()
+  // }
+
+  createChat(user: UserProfile) {
+    this.chatServices
+      .isExistingChat(user.uid)
+      .pipe(
+        switchMap((chatId) => {
+          if (!chatId) {
+            return this.chatServices.createChat(user);
+          } else {
+            return of(chatId);
+          }
+        })
+      )
+      .subscribe((chatId) => {
+        this.chatListControl.setValue([chatId]);
+      });
   }
 
   selectUser(id: any) {
     this.chatServices.updateCurrentChat(id)
+    const userclass = document.getElementsByClassName('home-page-window')
+    userclass[0].classList.add('hide')
+
   }
 
   selectedChat$ = combineLatest([
