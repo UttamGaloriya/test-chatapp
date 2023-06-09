@@ -3,8 +3,8 @@ import { UserProfile } from "./user-profile";
 export interface Chat {
     id: string;
     lastMessage?: string;
-    lastMessageDate?: Date & Timestamp
-    lastMessageUserId?: string
+    lastMessageDate?: Date & Timestamp;
+    lastMessageUserId?: string;
     userIds: string[];
     users: UserProfile[];
 

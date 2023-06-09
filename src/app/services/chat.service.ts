@@ -19,6 +19,7 @@ export class ChatService {
       take(1),
       concatMap((user) =>
         addDoc(ref, {
+          lastMessageUserId: user?.uid,
           userIds: [user?.uid, otherUser?.uid],
           users: [
             {
@@ -89,8 +90,8 @@ export class ChatService {
           sentDate: today,
         })
       ),
-      concatMap(() =>
-        updateDoc(chatRef, { lastMessage: message, lastMessageDate: today })
+      concatMap((user) =>
+        updateDoc(chatRef, { lastMessage: message, lastMessageDate: today, lastMessageUserId: user?.id })
       )
     );
   }

@@ -15,7 +15,7 @@
 
     </div>
     <!-- <div class="text-chat"> -->
-    <div class="chat-room-content">
+    <div class="chat-room-content" *ngIf="authUser$ |async as auth">
         <ng-container *ngIf="message$ |async as msg">
 
             <div *ngFor="let message of msg">
@@ -26,22 +26,23 @@
                 </div> -->
 
 
-                <div class="chat-span-li" *ngIf="authUser$ |async as auth">
+                <div class="chat-span-li">
                     <div class="chat-span-user"
                         [ngClass]="{'chat-span-active-user' : auth.uid==message.senderId ,'chat-span-other-user':auth.uid!==message.senderId }">
                         {{message.text}}
                         <div class="sentdate">{{message.sentDate | dateDisplay }}</div>
                     </div>
+
                 </div>
             </div>
-
+            {{auth.uid}}
+            {{lastSeenId}}
+            <span>{{lastSeenId==auth.uid ? 'user': 'otheruser'}}</span>
             <div #endOfChat></div>
         </ng-container>
     </div>
     <div class="input-area">
-
         <mat-form-field appearance="outline" class="max-100">
-
             <textarea matInput [formControl]="messageControl" placeholder="Enter your message..."
                 (keydown.enter)="sendMessage()">
                 </textarea>

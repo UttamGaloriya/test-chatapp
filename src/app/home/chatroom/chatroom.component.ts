@@ -15,12 +15,13 @@ import { error } from 'console';
 })
 export class ChatroomComponent implements OnInit {
   // currentId?: any
+  lastSeenId?: string
   currentId: any = 0
-
+  currentUserId?: string
   messageControl = new FormControl('')
 
   cureentUser$ = this.chatServices.selectedChat$
-  chatId = this.chatServices.selectedChat$.subscribe((res) => { this.myfunction(res?.id) })
+  chatId = this.chatServices.selectedChat$.subscribe((res) => { this.myfunction(res?.id), console.log(res), this.lastSeenId = res?.lastMessageUserId })
   authUser$ = this.authServices.currentUser$
   cuData?: Chat
   message$: Observable<Message[]> | undefined
@@ -38,12 +39,13 @@ export class ChatroomComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
   }
 
   myfunction(id: any) {
     if (this.currentId != id) {
       this.message$ = this.chatServices.selectedChat$.pipe(
-        map(value => id),
+        map((value) => console.log(value),),
         switchMap((chatId) => this.chatServices.getChatMessages$(id),),
         tap((res) => { console.log(res), this.scrollToBottom() })
       )
