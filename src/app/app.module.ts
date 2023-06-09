@@ -22,7 +22,7 @@ import { provideRemoteConfig, getRemoteConfig } from '@angular/fire/remote-confi
 import { provideStorage, getStorage } from '@angular/fire/storage';
 import { DatePipe } from '@angular/common';
 import { TextlengthPipe } from './pipe/textlength.pipe';
-
+import { NgxEmojiPickerModule } from 'ngx-emoji-picker';
 
 // import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 
@@ -40,6 +40,7 @@ import { TextlengthPipe } from './pipe/textlength.pipe';
     MatmodualsModule,
     ReactiveFormsModule,
     HttpClientModule,
+    NgxEmojiPickerModule.forRoot(),
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAnalytics(() => getAnalytics()),
     provideAuth(() => getAuth()),

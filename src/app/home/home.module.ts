@@ -14,6 +14,7 @@ import { ChatuserlistComponent } from './chatuserlist/chatuserlist.component';
 import { DateDisplayPipe } from '../pipe/date-display.pipe';
 import { TextlengthPipe } from '../pipe/textlength.pipe';
 import { ChatDatePipe } from '../pipe/chat-date.pipe';
+import { NgxEmojiPickerModule } from 'ngx-emoji-picker';
 
 
 
@@ -35,6 +36,8 @@ import { ChatDatePipe } from '../pipe/chat-date.pipe';
     HomeRoutingModule,
     MatmodualsModule,
     ReactiveFormsModule,
+    // NgxEmojiPickerModule
+    NgxEmojiPickerModule.forRoot(),
 
   ],
   providers: []

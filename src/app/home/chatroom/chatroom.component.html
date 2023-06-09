@@ -39,15 +39,19 @@
         </ng-container>
     </div>
     <div class="input-area">
+
         <mat-form-field appearance="outline" class="max-100">
-            <input matInput [formControl]="messageControl" placeholder="Enter your message..."
+
+            <textarea matInput [formControl]="messageControl" placeholder="Enter your message..."
                 (keydown.enter)="sendMessage()">
-            <!-- <input matInput placeholder="Enter your message..." [formControl]="messageControl"
-                (keydown.enter)="sendMessage()" /> -->
+                </textarea>
+            <button (click)="toggled = !toggled" [emojiPickerDirection]=" 'top' || 'right'" [(emojiPickerIf)]="toggled"
+                matSuffix mat-icon-button (emojiPickerSelect)="handleSelection($event)"><mat-icon>😄</mat-icon></button>
             <button mat-icon-button matSuffix (click)="sendMessage()" type="button">
                 <mat-icon>send</mat-icon>
             </button>
         </mat-form-field>
+
     </div>
 </div>
 <!-- </div> -->

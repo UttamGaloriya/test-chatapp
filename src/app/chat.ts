@@ -4,6 +4,7 @@ export interface Chat {
     id: string;
     lastMessage?: string;
     lastMessageDate?: Date & Timestamp
+    lastMessageUserId?: string
     userIds: string[];
     users: UserProfile[];
 

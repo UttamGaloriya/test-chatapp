@@ -17,7 +17,8 @@ export class ChatroomComponent implements OnInit {
   // currentId?: any
   currentId: any = 0
 
-  messageControl = new FormControl
+  messageControl = new FormControl('')
+
   cureentUser$ = this.chatServices.selectedChat$
   chatId = this.chatServices.selectedChat$.subscribe((res) => { this.myfunction(res?.id) })
   authUser$ = this.authServices.currentUser$
@@ -37,7 +38,6 @@ export class ChatroomComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.chatServices.selectedChat$.subscribe((res) => { this.cuData = res, this.currentId = res?.id, this.myfunction(this.cuData?.id) })
   }
 
   myfunction(id: any) {
@@ -87,5 +87,11 @@ export class ChatroomComponent implements OnInit {
     }
     return false
   }
+  //emoji
+  toggled: boolean = false;
 
+  handleSelection(event: any) {
+    console.log(event.char);
+    this.messageControl.setValue(this.messageControl.value + event.char)
+  }
 }
