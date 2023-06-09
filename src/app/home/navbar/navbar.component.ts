@@ -22,19 +22,27 @@ export class NavbarComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-
+    this.user$.subscribe((res) => {
+      console.log(res)
+      if (res?.firstName && res?.photoURL) {
+      }
+      else {
+        this.Myprofile()
+      }
+    }
+    )
   }
   logout() {
     this.authservices.removeToken()
   }
-  uploadImage(event: any, user: User) {
-    this.imgservices.uploadImage(event.target.files[0], `images/profile/${user.uid}`).pipe(
-      concatMap((photoURL) =>
-        this.authservices.updateProfileData({ photoURL })
-      )).subscribe(
-        (data) => { }
-      )
-  }
+  // uploadImage(event: any, user: User) {
+  //   this.imgservices.uploadImage(event.target.files[0], `images/profile/${user.uid}`).pipe(
+  //     concatMap((photoURL) =>
+  //       this.authservices.updateProfileData({ photoURL })
+  //     )).subscribe(
+  //       (data) => { }
+  //     )
+  // }
   Myprofile() {
     this.dialog.open(FormComponent)
   }

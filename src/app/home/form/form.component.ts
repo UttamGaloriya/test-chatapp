@@ -17,7 +17,7 @@ import { UserProfile } from 'src/app/user-profile';
 })
 export class FormComponent implements OnInit {
   form!: FormGroup
-  seasons: string[] = ['male', 'female', 'other'];
+  seasons: string[] = ['male', 'female'];
 
   user$ = this.userservices.currentUserProfile$;
   // useruserphoto$ = this.auth.currentUser$;
@@ -33,10 +33,10 @@ export class FormComponent implements OnInit {
   ngOnInit(): void {
     this.form = this.fb.group({
       uid: [''],
-      firstName: ['', [Validators.required, this.validateInput]],
-      lastName: ['', [Validators.required, this.validateInput]],
+      firstName: ['', [Validators.required, this.validateInput, Validators.maxLength(15)]],
+      lastName: ['', [Validators.required, this.validateInput, Validators.maxLength(15)]],
       gender: ['', [Validators.required,]],
-      userName: ['', [Validators.required, this.validateUser]],
+      userName: ['', [Validators.required, this.validateUser, Validators.maxLength(15)]],
     })
 
 

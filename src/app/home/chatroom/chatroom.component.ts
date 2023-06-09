@@ -14,33 +14,43 @@ import { error } from 'console';
   styleUrls: ['./chatroom.component.scss']
 })
 export class ChatroomComponent implements OnInit {
+  // currentId?: any
+  currentId: any = 0
 
   messageControl = new FormControl
   cureentUser$ = this.chatServices.selectedChat$
+  chatId = this.chatServices.selectedChat$.subscribe((res) => { this.myfunction(res?.id) })
   authUser$ = this.authServices.currentUser$
   cuData?: Chat
   message$: Observable<Message[]> | undefined
+
+
   messageData: any
-  currentId: any = 0
   chatHistoryDate?: any
 
   @ViewChild('endOfChat')
   endOfChat!: ElementRef;
+
 
   constructor(private chatServices: ChatService, private authServices: AuthService) {
     this.scrollToBottom()
   }
 
   ngOnInit(): void {
-    this.chatServices.selectedChat$.subscribe((res) => { this.cuData = res, this.currentId = res?.id, this.myfunction(this.cuData?.id) })
+    // this.chatServices.selectedChat$.subscribe((res) => { this.cuData = res, this.currentId = res?.id, this.myfunction(this.cuData?.id) })
   }
 
   myfunction(id: any) {
-    this.message$ = this.chatServices.selectedChat$.pipe(
-      map(value => id),
-      switchMap((chatId) => this.chatServices.getChatMessages$(chatId),),
-      tap((res) => { console.log(res), this.scrollToBottom() })
-    )
+    if (this.currentId != id) {
+      this.message$ = this.chatServices.selectedChat$.pipe(
+        map(value => id),
+        switchMap((chatId) => this.chatServices.getChatMessages$(id),),
+        tap((res) => { console.log(res), this.scrollToBottom() })
+      )
+      this.currentId = id
+      console.log("yup")
+    }
+
   }
 
   sendMessage() {
@@ -67,7 +77,7 @@ export class ChatroomComponent implements OnInit {
       if (this.endOfChat) {
         this.endOfChat.nativeElement.scrollIntoView({ behavior: 'smooth' });
       }
-    }, 1000);
+    }, 100);
   }
 
   newDateMsg(datemsg: any) {

@@ -1,4 +1,10 @@
 <div class="form-container">
+    <div class="close-dailog-box">
+        <button mat-flat-button mat-dialog-close color="warn">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+
     <mat-card *ngIf="!editProfile">
         <form [formGroup]="form" (ngSubmit)="onSubmit()">
             <!--  first  name  -->
@@ -10,6 +16,7 @@
                     are not allowed</mat-error>
                 <mat-error *ngIf="f.firstName.errors?.invalidInput">Note: Use letters, numbers, and special
                     characters</mat-error>
+                <mat-error *ngIf="f.firstName.errors?.maxlength">Maxium 15 characters</mat-error>
             </mat-form-field>
             <!-- last name  -->
             <mat-form-field appearance="standard" class="max-100">
@@ -20,6 +27,7 @@
                     are not allowed</mat-error>
                 <mat-error *ngIf="f.lastName.errors?.invalidInput">Note: Use letters, numbers, and special
                     characters</mat-error>
+                <mat-error *ngIf="f.lastName.errors?.maxlength">Maxium 15 characters</mat-error>
             </mat-form-field>
             <!-- user name  -->
             <mat-form-field appearance="standard" class="max-100">
@@ -30,6 +38,7 @@
                     are not allowed</mat-error>
                 <mat-error *ngIf="f.userName.errors?.invalidInput">Note: Do Not Use special
                     characters</mat-error>
+                <mat-error *ngIf="f.userName.errors?.maxlength">Maxium 15 characters</mat-error>
             </mat-form-field>
 
 
@@ -38,7 +47,7 @@
 
             <mat-radio-group aria-labelledby="example-radio-group-label"
                 class="example-radio-group  example-radio-button " formControlName="gender">
-                <label id="example-radio-group-label">Gender : </label>
+                <label id="example-radio-group-label">Gender</label>
                 <mat-radio-button *ngFor="let season of seasons" [value]="season" class="ml-16">
                     {{season}}
                 </mat-radio-button>

@@ -18,7 +18,7 @@
     <mat-selection-list [formControl]="chatListControl" [multiple]="false">
         <mat-list-option *ngFor="let user of mychat$ |async " [value]="user.id">
             <button class="user-chat-profile chart-button-list" (click)=" selectUser(user.id)">
-                <img [src]="user.chatPic ??'./assets/images/user-profile.png'" alt="profile-img"
+                <img [src]="user.chatPic ||'./assets/images/user-profile.png'" alt="profile-img"
                     class="chat-profile-img">
                 <div class="chat-user-name">
                     <p class="chat-user-name-heading">{{user.chatName}}</p>

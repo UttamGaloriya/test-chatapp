@@ -5,25 +5,14 @@
             <mat-icon>keyboard_backspace</mat-icon>
         </button>
         <button class="user-chat-profile">
-            <img [src]="user.chatPic ?? './assets/images/user-profile.png'" alt="profile-img" class="chat-profile-img">
+            <!-- <img [src]="user.chatPic ?? './assets/images/user-profile.png'" alt="profile-img" class="chat-profile-img"> -->
+            <img [src]="user.chatPic || './assets/images/user-profile.png'" alt="profile-img" class="chat-profile-img">
             <div class="chat-user-name">
                 <p class="chat-user-name-heading">{{user.chatName}}</p>
                 <span>Active now</span>
             </div>
         </button>
-        <!-- <button mat-icon-button color="primary" aria-label="Example icon button with a home icon"
-            class="user-chat-search">
-            <mat-icon>search</mat-icon>
-        </button> -->
 
-        <!-- <button mat-mini-fab color="primary" aria-label="Example icon button with a filter list icon"
-            class="chat-video-call call">
-            <mat-icon>videocam</mat-icon>
-        </button>
-        <button mat-mini-fab color="primary" aria-label="Example icon button with a filter list icon"
-            class="chat-voice-call call">
-            <mat-icon>call</mat-icon>
-        </button> -->
     </div>
     <!-- <div class="text-chat"> -->
     <div class="chat-room-content">

@@ -105,7 +105,7 @@ color: rgb(14, 114, 207);
 .form-container{max-width: 800px;margin: 0 auto;}
 .max-100{width: 100%;}
 .example-radio-group {display: flex;flex-direction: row;margin: 5px 16px;align-items: flex-start;}
-.example-radio-button { margin: 5px;}
+.example-radio-button {margin: 5px 0px 10px 0px;}
 .ml-16{margin-left: 16px;}
 //chat-room
 .chat-room-header{position: relative; display: flex;flex-direction: row;flex-grow: 0;flex-shrink: 0;overflow: visible;align-items: center;align-self: stretch;justify-content: start;height: 56px;background-color: rgb(255, 255, 255);padding-left: 20px;padding-right: 20px;border-bottom: 1px solid rgb(225, 225, 225);}
@@ -186,6 +186,9 @@ margin: auto;
 }
 .mat-form-field-appearance-outline .mat-form-field-outline { color: rgb(0 0 0);}
 .back-btn{margin-right: auto;}
+
+//dailog-box
+.mat-dialog-container .close-dailog-box{width: 100%;display: flex;justify-content: flex-end;}
 /* Responsive Media Queries
 --------------------------------------------------------------------------------------------------------*/
 @media (max-width:1399px) { }
@@ -199,4 +202,6 @@ margin: auto;
 .hide .chat-boat{display: block;}
 
  }
-@media (max-width:575px) { }
+@media (max-width:575px) {
+  .ml-16 {margin-left: 6px;}
+ }

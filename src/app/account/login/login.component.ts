@@ -4,6 +4,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { Router } from '@angular/router';
 import { NotificationService } from 'src/app/services/notification.service';
+import { FirebaseError } from 'firebase/app';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -32,7 +33,7 @@ export class LoginComponent implements OnInit {
           console.log(res),
             alert("login done")
         },
-        (err) => { this.err = err, console.log(this.err), this.notification.showNotification("Something wrong plese try again", "ok", "error") },
+        (err) => { this.showError(err), this.notification.showNotification("Something wrong plese try again", "ok", "error") },
         () => {
           this.authServices.setToken()
           console.log("login complite"),
@@ -42,6 +43,9 @@ export class LoginComponent implements OnInit {
     }
   }
 
+  showError(err: FirebaseError) {
+    this.err = err.code.slice(5)
+  }
 
 
 }
