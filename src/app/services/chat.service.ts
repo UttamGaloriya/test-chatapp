@@ -77,7 +77,7 @@ export class ChatService {
   ]).pipe(map(([value, chats]) => chats.find((c) => c.id === value)));
 
   //add chat
-  addChatMessage(chatId: string, message: string, authuid: string): Observable<any> {
+  addChatMessage(chatId: string, message: string, authuid: any): Observable<any> {
     const ref = collection(this.firestore, 'chats', chatId, 'messages');
     const chatRef = doc(this.firestore, 'chats', chatId);
     const today = Timestamp.fromDate(new Date());
@@ -127,4 +127,9 @@ export class ChatService {
       })
     );
   }
+  // updateFirstChat() {
+  //   // const ref = collection(this.firestore, 'chats', chatId, 'messages');
+  //  this.getChatMessages$.pipe(())
+
+  // }
 }
