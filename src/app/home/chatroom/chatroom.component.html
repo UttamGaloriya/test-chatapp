@@ -4,7 +4,7 @@
             class="mobile-view-button">
             <mat-icon>keyboard_backspace</mat-icon>
         </button>
-        <button class="user-chat-profile">
+        <button class="user-chat-profile" (click)="update()">
             <!-- <img [src]="user.chatPic ?? './assets/images/user-profile.png'" alt="profile-img" class="chat-profile-img"> -->
             <img [src]="user.chatPic || './assets/images/user-profile.png'" alt="profile-img" class="chat-profile-img">
             <div class="chat-user-name">
@@ -15,32 +15,32 @@
 
     </div>
     <!-- <div class="text-chat"> -->
-    <div class="chat-room-content" *ngIf="authUser$ |async as auth">
+    <div class="chat-room-content" *ngIf="authUser$ |async as auth" (scroll)="onScroll($event)">
         <ng-container *ngIf="message$ |async as msg">
-
-            <div *ngFor="let message of msg">
-
-                <!-- <div class="history-date">
-                    {{newDateMsg(message.sentDate|chatDate)==true? '{{message.sentDate}}':''}}
-              
-                </div> -->
-
-
+            <div *ngFor="let message of msg let i=index">
                 <div class="chat-span-li">
                     <div class="chat-span-user"
                         [ngClass]="{'chat-span-active-user' : auth.uid==message.senderId ,'chat-span-other-user':auth.uid!==message.senderId }">
                         {{message.text}}
+                        <div>{{i+1}}</div>
                         <div class="sentdate">{{message.sentDate | dateDisplay }}</div>
                     </div>
 
                 </div>
             </div>
-            {{auth.uid}}
-            {{lastSeenId}}
-            <span>{{lastSeenId==auth.uid ? 'user': 'otheruser'}}</span>
+            <!-- last seen  -->
+            <div class="last-seen" *ngIf="lastSeenId!=auth.uid">
+                <!-- <span>{{lastSeenId==auth.uid ? auth.userName :user.chatName}}</span> -->
+                <img [src]="user.chatPic || './assets/images/user-profile.png'" alt="profile-img"
+                    class="chat-profile-img-seen">
+                <span>{{user.chatName}}</span>
+            </div>
             <div #endOfChat></div>
         </ng-container>
     </div>
+
+
+
     <div class="input-area">
         <mat-form-field appearance="outline" class="max-100">
             <textarea matInput [formControl]="messageControl" placeholder="Enter your message..."

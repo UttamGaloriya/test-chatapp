@@ -107,6 +107,7 @@ color: rgb(14, 114, 207);
 .example-radio-group {display: flex;flex-direction: row;margin: 5px 16px;align-items: flex-start;}
 .example-radio-button {margin: 5px 0px 10px 0px;}
 .ml-16{margin-left: 16px;}
+.edit-pen{position: absolute;color: primary;top: 25px;right: 35px;font-size: 30px;}
 //chat-room
 .chat-room-header{position: relative; display: flex;flex-direction: row;flex-grow: 0;flex-shrink: 0;overflow: visible;align-items: center;align-self: stretch;justify-content: start;height: 56px;background-color: rgb(255, 255, 255);padding-left: 20px;padding-right: 20px;border-bottom: 1px solid rgb(225, 225, 225);}
 .user-chat-profile{display:flex;background: transparent;border: none;align-items: center;}
@@ -171,30 +172,20 @@ color: rgb(14, 114, 207);
 .user-list-last-time{margin-left: auto;}
 .user-chat-profile{padding: 4px 14px;height: 56px; width: 100%;}
 
-.myprofile-img{max-width: 300px;max-height: 300px;width: 100%;height: 100%;background: cornflowerblue;}
+.myprofile-img{max-width: 300px;max-height: 300px;width: 250px;height: 100%;background: cornflowerblue;}
 .user-deatils p{font-size: 16px;padding: 8px 0px ;border-bottom: 1px solid  rgb(14, 114, 207);display: flex;}
 .user-deatils span{width: 100%;}
 .edit-my-profile{display: flex;justify-content: center;padding: 10px 0px;}
 .chat-room .mobile-view-button{display: none;}
 .search-div{padding: 0px 16px;}
 //histroy date
-.history-date{text-align: center;
-background: antiquewhite;
-padding: 13px 10px;
-font-size: 18px;
-max-inline-size: fit-content;
-margin: auto;
-}
+.history-date{text-align: center;background: antiquewhite;padding: 13px 10px;font-size: 18px;max-inline-size: fit-content;margin: auto;}
 .mat-form-field-appearance-outline .mat-form-field-outline { color: rgb(0 0 0);}
 .back-btn{margin-right: auto;}
 //emoji box
-emoji-picker {
-  position: absolute;
-  z-index: 9999;
-  display: none;
-  top: -90px;
-  left: -10px;
-}
+emoji-picker {position: absolute;z-index: 9999;display: none;top: -90px;left: -10px;}
+.last-seen{display: flex;flex-direction: row-reverse;background-color: aquamarine;  width: max-content;margin-left: auto;margin-bottom: 10px;border-radius: 14px;padding: 5px 10px;}
+.last-seen .chat-profile-img-seen{height: 20px;border-radius: 50%;margin-left: 10px;  }
 //dailog-box
 .mat-dialog-container .close-dailog-box{width: 100%;display: flex;justify-content: flex-end;}
 /* Responsive Media Queries
@@ -208,7 +199,7 @@ emoji-picker {
 .chat-list-div{width: 100%;}
 .hide .chat-list-div{display: none;}
 .hide .chat-boat{display: block;}
-.chat-room .chat-room-content {padding: 10px 2px;margin: 0 3%;}
+.chat-room .chat-room-content {padding: 20px 2px;margin: 0 3%;}
  }
 @media (max-width:575px) {
   .ml-16 {margin-left: 6px;}

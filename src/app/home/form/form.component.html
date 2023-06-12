@@ -40,11 +40,7 @@
                     characters</mat-error>
                 <mat-error *ngIf="f.userName.errors?.maxlength">Maxium 15 characters</mat-error>
             </mat-form-field>
-
-
             <!-- user gender -->
-
-
             <mat-radio-group aria-labelledby="example-radio-group-label"
                 class="example-radio-group  example-radio-button " formControlName="gender">
                 <label id="example-radio-group-label">Gender</label>
@@ -52,15 +48,10 @@
                     {{season}}
                 </mat-radio-button>
             </mat-radio-group>
-
-
             <!-- button  -->
-
             <div class="button-box">
                 <button mat-flat-button color="primary" type="submit" class="account-btn">Update</button>
             </div>
-
-
         </form>
     </mat-card>
 
@@ -68,11 +59,11 @@
 
         <div class='profile-img-dailog'>
             <button class="" (click)="inputFiled.click()" *ngIf="user$ | async as user">
-
                 <img [src]="user.photoURL ?? './assets/images/profile-daliog.png'" alt="g" class="myprofile-img">
+                <!-- <img src="./assets/images/edit.png" alt="edit-img"> -->
+                <mat-icon class="edit-pen">edit</mat-icon>
                 <input type="file" hidden #inputFiled (change)="uploadImage($event , user)">
             </button>
-
         </div>
 
         <div class="user-deatils" *ngIf="user$ | async as user">
@@ -85,10 +76,5 @@
             <button mat-flat-button color="primary" (click)="onEditProfile()">Edit Profile</button>
         </div>
     </mat-card>
-    <!-- <button type="button" (click)="mydata()">task</button>
-    <div *ngIf="user$ | async as user">
-        {{user.uid}}
-        {{user.firstName}}
-        {{user.userName}}
-    </div> -->
+
 </div>

@@ -77,7 +77,7 @@ export class ChatService {
   ]).pipe(map(([value, chats]) => chats.find((c) => c.id === value)));
 
   //add chat
-  addChatMessage(chatId: string, message: string): Observable<any> {
+  addChatMessage(chatId: string, message: string, authuid: string): Observable<any> {
     const ref = collection(this.firestore, 'chats', chatId, 'messages');
     const chatRef = doc(this.firestore, 'chats', chatId);
     const today = Timestamp.fromDate(new Date());
@@ -88,10 +88,11 @@ export class ChatService {
           text: message,
           senderId: user?.uid,
           sentDate: today,
-        })
+        }),
+
       ),
       concatMap((user) =>
-        updateDoc(chatRef, { lastMessage: message, lastMessageDate: today, lastMessageUserId: user?.id })
+        updateDoc(chatRef, { lastMessage: message, lastMessageDate: today, lastMessageUserId: authuid })
       )
     );
   }
@@ -101,6 +102,17 @@ export class ChatService {
     const queryAll = query(ref, orderBy('sentDate', 'asc'));
     return collectionData(queryAll) as Observable<Message[]>;
   }
+
+
+  lastmessageSeen(chatId: string) {
+    const chatRef = doc(this.firestore, 'chats', chatId);
+    const today = Timestamp.fromDate(new Date());
+    return this.usersService.currentUserProfile$.pipe(
+      take(1),
+      concatMap((user) => updateDoc(chatRef, { lastMessageDate: today, lastMessageUserId: user?.uid }))
+    )
+  }
+
 
   isExistingChat(otherUserId: string): Observable<string | null> {
     return this.myChat$.pipe(

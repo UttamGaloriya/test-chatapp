@@ -61,6 +61,7 @@ export class ChatuserlistComponent implements OnInit {
     this.chatServices.updateCurrentChat(id)
     const userclass = document.getElementsByClassName('home-page-window')
     userclass[0].classList.add('hide')
+    this.chatServices.lastmessageSeen(id).subscribe()
 
   }
 
