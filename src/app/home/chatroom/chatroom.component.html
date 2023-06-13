@@ -14,10 +14,11 @@
         </button>
 
     </div>
+    <app-spinner class="loader-chat" *ngIf="loading"></app-spinner>
     <!-- <div class="text-chat"> -->
-    <div class="chat-room-content" *ngIf="authUser$ |async as auth" (scroll)="onScroll($event)">
+    <div class="chat-room-content" *ngIf="authUser$ |async as auth" (scroll)="onScroll($event)" #midOfChat>
         <ng-container *ngIf="message$ |async as msg">
-            <div *ngFor="let message of Message_data let i=index">
+            <div *ngFor="let message of msg let i=index">
                 <div class="chat-span-li">
                     <div class="chat-span-user"
                         [ngClass]="{'chat-span-active-user' : auth.uid==message.senderId ,'chat-span-other-user':auth.uid!==message.senderId }">

@@ -13,8 +13,7 @@ import { concatMap } from 'rxjs/operators';
 })
 export class AuthService {
 
-  // private apikey = "AIzaSyBd2qrxKb-n2ZFfo1HiwtF96SBwyhaDrEw"
-  private apikey = "AIzaSyBd2qrxKb-n2ZFfo1HiwtF96SBwyhaDrEw"
+
 
 
   private getHeaders(): HttpHeaders {
@@ -25,23 +24,7 @@ export class AuthService {
   }
   constructor(private http: HttpClient, private router: Router, private afAuth: Auth) { }
 
-  // signUp(email: string, password: string) {
-  //   return this.http.post<AuthResponse>(`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBd2qrxKb-n2ZFfo1HiwtF96SBwyhaDrEw`,
-  //     {
-  //       email: email,
-  //       password: password,
-  //       returnSecureToken: true
 
-  //     });
-  // }
-  // signIn(email: string, password: string): Observable<any> {
-  //   return this.http.post(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBd2qrxKb-n2ZFfo1HiwtF96SBwyhaDrEw`,
-  //     {
-  //       email: email,
-  //       password: password,
-  //       returnSecureToken: true,
-  //     });
-  // }
 
   currentUser$ = authState(this.afAuth);
 

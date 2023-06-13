@@ -15,6 +15,7 @@ import { DateDisplayPipe } from '../pipe/date-display.pipe';
 import { TextlengthPipe } from '../pipe/textlength.pipe';
 import { ChatDatePipe } from '../pipe/chat-date.pipe';
 import { NgxEmojiPickerModule } from 'ngx-emoji-picker';
+import { SpinnerComponent } from './spinner/spinner.component';
 
 
 
@@ -30,6 +31,7 @@ import { NgxEmojiPickerModule } from 'ngx-emoji-picker';
     DateDisplayPipe,
     TextlengthPipe,
     ChatDatePipe,
+    SpinnerComponent,
   ],
   imports: [
     CommonModule,

@@ -105,6 +105,7 @@ export class ChatService {
 
 
   lastmessageSeen(chatId: string) {
+    debugger
     const chatRef = doc(this.firestore, 'chats', chatId);
     const today = Timestamp.fromDate(new Date());
     return this.usersService.currentUserProfile$.pipe(
