@@ -4,7 +4,7 @@
             class="mobile-view-button">
             <mat-icon>keyboard_backspace</mat-icon>
         </button>
-        <button class="user-chat-profile" (click)="update()">
+        <button class="user-chat-profile">
             <!-- <img [src]="user.chatPic ?? './assets/images/user-profile.png'" alt="profile-img" class="chat-profile-img"> -->
             <img [src]="user.chatPic || './assets/images/user-profile.png'" alt="profile-img" class="chat-profile-img">
             <div class="chat-user-name">
@@ -18,12 +18,12 @@
     <!-- <div class="text-chat"> -->
     <div class="chat-room-content" *ngIf="authUser$ |async as auth" (scroll)="onScroll($event)" #midOfChat>
         <ng-container *ngIf="message$ |async as msg">
-            <div *ngFor="let message of msg let i=index">
+            <div *ngFor="let message of Message_data let i=index">
                 <div class="chat-span-li">
                     <div class="chat-span-user"
                         [ngClass]="{'chat-span-active-user' : auth.uid==message.senderId ,'chat-span-other-user':auth.uid!==message.senderId }">
                         {{message.text}}
-                        <div>{{i+1}}</div>
+                        <div>=>{{i+1}}</div>
                         <div class="sentdate">{{message.sentDate | dateDisplay }}</div>
                     </div>
 

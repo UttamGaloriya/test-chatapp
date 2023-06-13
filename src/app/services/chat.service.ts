@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { collection, Firestore, addDoc, collectionData, where, query, Timestamp, doc, updateDoc, orderBy } from '@angular/fire/firestore';
+import { collection, Firestore, addDoc, collectionData, where, query, Timestamp, doc, updateDoc, orderBy, limitToLast, endBefore, limit, endAt } from '@angular/fire/firestore';
 import { UserProfile } from '../user-profile';
 import { UsersService } from './users.service';
 import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
@@ -99,13 +99,18 @@ export class ChatService {
 
   getChatMessages$(chatId: string): Observable<Message[]> {
     const ref = collection(this.firestore, 'chats', chatId, 'messages');
-    const queryAll = query(ref, orderBy('sentDate', 'asc'));
+    const queryAll = query(ref, orderBy('sentDate', 'asc'), limitToLast(7));
+    return collectionData(queryAll) as Observable<Message[]>;
+  }
+
+  getChatMessagesLoader$(chatId: string, chat: Message): Observable<Message[]> {
+    const ref = collection(this.firestore, 'chats', chatId, 'messages');
+    const queryAll = query(ref, orderBy('sentDate', 'asc'), limit(7), endBefore(chat.sentDate),);
     return collectionData(queryAll) as Observable<Message[]>;
   }
 
 
   lastmessageSeen(chatId: string) {
-    debugger
     const chatRef = doc(this.firestore, 'chats', chatId);
     const today = Timestamp.fromDate(new Date());
     return this.usersService.currentUserProfile$.pipe(

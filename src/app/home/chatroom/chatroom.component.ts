@@ -25,7 +25,7 @@ export class ChatroomComponent implements OnInit {
 
   authorized!: UserProfile | null
   // Temp_Message: any[] = []
-  // Message_data: any[] = [];
+  Message_data: any[] = [];
   message_length: number = 0
   lastSeenId?: string
   currentChatId: any = 0
@@ -47,17 +47,46 @@ export class ChatroomComponent implements OnInit {
   }
 
 
+  // myfunction(id: any) {
+  //   if (this.currentChatId !== id) {
+  //     this.message$ = this.chatServices.selectedChat$.pipe(
+  //       switchMap((chatId) => {
+  //         this.currentChatId = id; // Update the current chat ID
+  //         return this.chatServices.getChatMessages$(id).pipe(
+  //           map((messages) => messages.slice(-this.count)) // Get the last 30 messages
+  //         );
+  //       }),
+  //       tap((res) => { this.scrollToBottom(), this.loading = false })
+  //     );
+  //   }
+  // }
+  // myfunction(id: any) {
+  //   if (this.currentChatId !== id) {
+  //     this.message$ = this.chatServices.selectedChat$.pipe(
+  //       switchMap((chatId) => {
+  //         this.currentChatId = id; // Update the current chat ID
+  //         return this.chatServices.getChatMessages$(id).pipe(
+  //           map((messages) => {
+  //             const oldMessage = this.Message_data
+  //             this.Message_data = oldMessage.concat(messages)
+  //             return this.Message_data
+  //           })
+  //         );
+  //       }),
+  //       tap((res) => { this.scrollToBottom(), this.loading = false })
+  //     );
+  //   }
+  // }
+
+
   myfunction(id: any) {
     if (this.currentChatId !== id) {
       this.message$ = this.chatServices.selectedChat$.pipe(
-        switchMap((chatId) => {
-          this.currentChatId = id; // Update the current chat ID
-          return this.chatServices.getChatMessages$(id).pipe(
-            map((messages) => messages.slice(-this.count)) // Get the last 30 messages
-          );
-        }),
-        tap((res) => { this.scrollToBottom(), this.loading = false })
-      );
+        map((value) => console.log(value),),
+        switchMap((chatId) => { return this.chatServices.getChatMessages$(id) },),
+        tap((res) => { this.scrollToBottom(), this.Message_data = res, this.loading = false })
+      ),
+        this.currentChatId = id
     }
   }
 
@@ -99,7 +128,7 @@ export class ChatroomComponent implements OnInit {
 
   onScroll(event: any) {
     this.scrollValue = event.target.scrollTop;
-    if (this.scrollValue == 0 && this.count <= this.message_length) {
+    if (this.scrollValue == 0) {
       this.count = this.count + 30
       console.log("value upadte")
       this.update()
@@ -108,20 +137,46 @@ export class ChatroomComponent implements OnInit {
 
 
 
+  // update() {
+  //   this.loading = true
+  //   //upadate message
+  //   this.message$ = this.chatServices.selectedChat$.pipe(
+  //     switchMap((chatId) => {
+  //       this.currentChatId  // Update the current chat ID
+  //       return this.chatServices.getChatMessages$(this.currentChatId).pipe(
+  //         map((messages) => messages.slice(-this.count)) // Get the last count messages
+  //       );
+  //     }),
+  //     tap(() => { this.loading = false })
+  //   );
+  // }
+
+
   update() {
     this.loading = true
-
-
-    //upadate message
+    const lastmsg = this.Message_data[0]
+    const oldMessage = this.Message_data
+    // upadate message
     this.message$ = this.chatServices.selectedChat$.pipe(
       switchMap((chatId) => {
         this.currentChatId  // Update the current chat ID
-        return this.chatServices.getChatMessages$(this.currentChatId).pipe(
-          map((messages) => messages.slice(-this.count)) // Get the last count messages
+        return this.chatServices.getChatMessagesLoader$(this.currentChatId, lastmsg).pipe(
+          map((messages) => {
+            this.Message_data = messages.concat(oldMessage)
+            console.log(messages)
+            console.log(this.Message_data)
+            console.log(lastmsg)
+            // this.Message_data = messages
+            return messages
+          }) // Get the last count messages
         );
       }),
       tap(() => { this.loading = false })
     );
+    // this.chatServices.getChatMessagesLoader$(this.currentChatId, lastmsg).pipe().subscribe(
+
+    //   (res => { console.log(res) })
+    // )
   }
 
 }
