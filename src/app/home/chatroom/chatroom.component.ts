@@ -9,6 +9,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { error } from 'console';
 import { UsersService } from 'src/app/services/users.service';
 import { UserProfile } from 'src/app/user-profile';
+import { NotificationService } from 'src/app/services/notification.service';
 
 @Component({
   selector: 'app-chatroom',
@@ -23,19 +24,20 @@ export class ChatroomComponent implements OnInit {
   message$: Observable<Message[]> | undefined
 
   authorized!: UserProfile | null
-  Temp_Message: any[] = []
-  Message_data: any[] = [];
+  // Temp_Message: any[] = []
+  // Message_data: any[] = [];
+  message_length: number = 0
   lastSeenId?: string
   currentChatId: any = 0
-  count: number = -30
+  count: number = 30
   scrollValue = 0;
   toggled: boolean = false;
-
+  loading: boolean = true;
   chatId = this.chatServices.selectedChat$.subscribe((res) => { this.myfunction(res?.id), this.lastSeenId = res?.lastMessageUserId })
 
   @ViewChild('endOfChat') endOfChat!: ElementRef;
-
-  constructor(private chatServices: ChatService, private authServices: AuthService, private userservices: UsersService) {
+  @ViewChild('midOfChat') midOfchat!: ElementRef;
+  constructor(private chatServices: ChatService, private authServices: AuthService, private userservices: UsersService, private notfication: NotificationService) {
     this.scrollToBottom()
   }
 
@@ -44,21 +46,22 @@ export class ChatroomComponent implements OnInit {
     this.scrollToBottom()
   }
 
+
   myfunction(id: any) {
     if (this.currentChatId !== id) {
       this.message$ = this.chatServices.selectedChat$.pipe(
-        switchMap((chatId) => this.chatServices.getChatMessages$(id)),
-        tap(() => this.scrollToBottom()),
-        map((messages) => {
-          console.log("dbg")
-          this.Temp_Message = messages
-          this.Message_data = this.Temp_Message.slice(this.count)
-          return this.Temp_Message.slice(this.count);
-        })
+        switchMap((chatId) => {
+          this.currentChatId = id; // Update the current chat ID
+          return this.chatServices.getChatMessages$(id).pipe(
+            map((messages) => messages.slice(-this.count)) // Get the last 30 messages
+          );
+        }),
+        tap((res) => { this.scrollToBottom(), this.loading = false })
       );
-      this.currentChatId = id;
     }
   }
+
+
 
 
   sendMessage() {
@@ -89,22 +92,36 @@ export class ChatroomComponent implements OnInit {
   }
 
 
+
   handleSelection(event: any) {
     this.messageControl.setValue(this.messageControl.value + event.char)
   }
 
   onScroll(event: any) {
     this.scrollValue = event.target.scrollTop;
-    console.log(this.scrollValue)
-    if (this.scrollValue == 0 && this.Message_data.length != this.Temp_Message.length) {
-      this.count = this.count - 30
+    if (this.scrollValue == 0 && this.count <= this.message_length) {
+      this.count = this.count + 30
       console.log("value upadte")
       this.update()
     }
   }
 
+
+
   update() {
-    this.Message_data = this.Temp_Message.slice(this.count)
-    console.log(this.count)
+    this.loading = true
+
+
+    //upadate message
+    this.message$ = this.chatServices.selectedChat$.pipe(
+      switchMap((chatId) => {
+        this.currentChatId  // Update the current chat ID
+        return this.chatServices.getChatMessages$(this.currentChatId).pipe(
+          map((messages) => messages.slice(-this.count)) // Get the last count messages
+        );
+      }),
+      tap(() => { this.loading = false })
+    );
   }
+
 }
