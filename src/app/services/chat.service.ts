@@ -97,6 +97,26 @@ export class ChatService {
     );
   }
 
+  addFileMessage(chatId: string, fileUrl: string, authuid: any): Observable<any> {
+    const ref = collection(this.firestore, 'chats', chatId, 'messages');
+    const chatRef = doc(this.firestore, 'chats', chatId);
+    const today = Timestamp.fromDate(new Date());
+    return this.usersService.currentUserProfile$.pipe(
+      take(1),
+      concatMap((user) =>
+        addDoc(ref, {
+          file: fileUrl,
+          senderId: user?.uid,
+          sentDate: today,
+        }),
+
+      ),
+      concatMap((user) =>
+        updateDoc(chatRef, { lastMessage: "file", lastMessageDate: today, lastMessageUserId: authuid })
+      )
+    );
+  }
+
   getChatMessages$(chatId: string): Observable<Message[]> {
     const ref = collection(this.firestore, 'chats', chatId, 'messages');
     const queryAll = query(ref, orderBy('sentDate', 'asc'), limitToLast(7));
@@ -105,7 +125,7 @@ export class ChatService {
 
   getChatMessagesLoader$(chatId: string, chat: Message): Observable<Message[]> {
     const ref = collection(this.firestore, 'chats', chatId, 'messages');
-    const queryAll = query(ref, orderBy('sentDate', 'asc'), limit(7), endBefore(chat.sentDate),);
+    const queryAll = query(ref, orderBy('sentDate', 'asc'), limitToLast(7), endBefore(chat.sentDate),);
     return collectionData(queryAll) as Observable<Message[]>;
   }
 

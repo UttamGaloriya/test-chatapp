@@ -23,6 +23,14 @@
                     <div class="chat-span-user"
                         [ngClass]="{'chat-span-active-user' : auth.uid==message.senderId ,'chat-span-other-user':auth.uid!==message.senderId }">
                         {{message.text}}
+
+
+                        <ng-container *ngIf="message.file">
+                            <a [href]="fileUrl" download="file" (click)="downloadFile(message.file)">file</a>
+
+                            <!-- <button type="button" (click)="downloadFile(message.file)">download</button> -->
+                        </ng-container>
+
                         <div>=>{{i+1}}</div>
                         <div class="sentdate">{{message.sentDate | dateDisplay }}</div>
                     </div>
@@ -44,9 +52,17 @@
 
     <div class="input-area">
         <mat-form-field appearance="outline" class="max-100">
-            <textarea matInput [formControl]="messageControl" placeholder="Enter your message..."
+
+
+            <div class='upload-file'>
+                <button class="" (click)="inputFiled.click()">
+                    <mat-icon class="upload-file">cloud_upload</mat-icon>
+                    <input type="file" hidden #inputFiled (change)="uploadFile($event)">
+                </button>
+            </div>
+            <input matInput [formControl]="messageControl" placeholder="Enter your message..."
                 (keydown.enter)="sendMessage()">
-                </textarea>
+
             <button (click)="toggled = !toggled" [emojiPickerDirection]=" 'top' || 'right'" [(emojiPickerIf)]="toggled"
                 matSuffix mat-icon-button (emojiPickerSelect)="handleSelection($event)"><mat-icon>😄</mat-icon></button>
             <button mat-icon-button matSuffix (click)="sendMessage()" type="button">

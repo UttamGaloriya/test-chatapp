@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { ChatuserlistComponent } from '../chatuserlist/chatuserlist.component';
 import { ChatService } from 'src/app/services/chat.service';
 import { FormControl } from '@angular/forms';
@@ -10,6 +10,9 @@ import { error } from 'console';
 import { UsersService } from 'src/app/services/users.service';
 import { UserProfile } from 'src/app/user-profile';
 import { NotificationService } from 'src/app/services/notification.service';
+import { ImageService } from 'src/app/services/image.service';
+import { DomSanitizer } from '@angular/platform-browser';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-chatroom',
@@ -33,11 +36,14 @@ export class ChatroomComponent implements OnInit {
   scrollValue = 0;
   toggled: boolean = false;
   loading: boolean = true;
+  msgToggled: boolean = true;
+  msgLast: boolean = false;
+  fileUrl: any
   chatId = this.chatServices.selectedChat$.subscribe((res) => { this.myfunction(res?.id), this.lastSeenId = res?.lastMessageUserId })
 
   @ViewChild('endOfChat') endOfChat!: ElementRef;
   @ViewChild('midOfChat') midOfchat!: ElementRef;
-  constructor(private chatServices: ChatService, private authServices: AuthService, private userservices: UsersService, private notfication: NotificationService) {
+  constructor(private chatServices: ChatService, private http: HttpClient, private sanitizer: DomSanitizer, private renderer: Renderer2, private authServices: AuthService, private userservices: UsersService, private notfication: NotificationService, private imgeServices: ImageService) {
     this.scrollToBottom()
   }
 
@@ -60,35 +66,30 @@ export class ChatroomComponent implements OnInit {
   //     );
   //   }
   // }
-  // myfunction(id: any) {
-  //   if (this.currentChatId !== id) {
-  //     this.message$ = this.chatServices.selectedChat$.pipe(
-  //       switchMap((chatId) => {
-  //         this.currentChatId = id; // Update the current chat ID
-  //         return this.chatServices.getChatMessages$(id).pipe(
-  //           map((messages) => {
-  //             const oldMessage = this.Message_data
-  //             this.Message_data = oldMessage.concat(messages)
-  //             return this.Message_data
-  //           })
-  //         );
-  //       }),
-  //       tap((res) => { this.scrollToBottom(), this.loading = false })
-  //     );
-  //   }
-  // }
-
-
   myfunction(id: any) {
     if (this.currentChatId !== id) {
       this.message$ = this.chatServices.selectedChat$.pipe(
-        map((value) => console.log(value),),
-        switchMap((chatId) => { return this.chatServices.getChatMessages$(id) },),
-        tap((res) => { this.scrollToBottom(), this.Message_data = res, this.loading = false })
-      ),
-        this.currentChatId = id
+        switchMap((chatId) => {
+          this.currentChatId = id; // Update the current chat ID
+          return this.chatServices.getChatMessages$(id).pipe(
+            map((messages) => {
+              this.Message_data = messages
+              return this.Message_data
+            })
+          );
+        }),
+        tap((res) => {
+          if (this.msgToggled) {
+            if (this.msgLast) {
+              this.Message_data = this.Message_data.concat(res[res.length - 1]);
+            } else { this.Message_data = res; }
+          }
+          this.scrollToBottom(), this.loading = false, this.msgToggled = false, this.msgLast = true
+        })
+      );
     }
   }
+
 
 
 
@@ -97,6 +98,7 @@ export class ChatroomComponent implements OnInit {
     const message = this.messageControl.value;
     if (message && this.currentChatId) {
       this.chatServices.addChatMessage(this.currentChatId, message, this.authorized?.uid).subscribe()
+      this.msgToggled = true
       this.messageControl.setValue('');
       this.scrollToBottom()
     }
@@ -105,10 +107,9 @@ export class ChatroomComponent implements OnInit {
 
   chatClose() {
     this.chatServices.updateCurrentChat(null)
-    if (window.screen.width <= 767) {
-      const userclass = document.getElementsByClassName('home-page-window')
-      userclass[0].classList.remove('hide')
-    }
+    const userclass = document.getElementsByClassName('home-page-window')
+    userclass[0].classList.remove('hide')
+
   }
 
 
@@ -136,47 +137,29 @@ export class ChatroomComponent implements OnInit {
   }
 
 
-
-  // update() {
-  //   this.loading = true
-  //   //upadate message
-  //   this.message$ = this.chatServices.selectedChat$.pipe(
-  //     switchMap((chatId) => {
-  //       this.currentChatId  // Update the current chat ID
-  //       return this.chatServices.getChatMessages$(this.currentChatId).pipe(
-  //         map((messages) => messages.slice(-this.count)) // Get the last count messages
-  //       );
-  //     }),
-  //     tap(() => { this.loading = false })
-  //   );
-  // }
-
-
   update() {
     this.loading = true
     const lastmsg = this.Message_data[0]
     const oldMessage = this.Message_data
-    // upadate message
-    this.message$ = this.chatServices.selectedChat$.pipe(
-      switchMap((chatId) => {
-        this.currentChatId  // Update the current chat ID
-        return this.chatServices.getChatMessagesLoader$(this.currentChatId, lastmsg).pipe(
-          map((messages) => {
-            this.Message_data = messages.concat(oldMessage)
-            console.log(messages)
-            console.log(this.Message_data)
-            console.log(lastmsg)
-            // this.Message_data = messages
-            return messages
-          }) // Get the last count messages
-        );
-      }),
-      tap(() => { this.loading = false })
-    );
-    // this.chatServices.getChatMessagesLoader$(this.currentChatId, lastmsg).pipe().subscribe(
-
-    //   (res => { console.log(res) })
-    // )
+    this.chatServices.getChatMessagesLoader$(this.currentChatId, lastmsg).subscribe(
+      res => { console.log(this.Message_data = res.concat(oldMessage)), this.loading = false }
+    )
   }
+  uploadFile(event: any) {
+    // this.imgeServices.uploadfile()
+    const date = Date.now()
+    const fileName = event.target.files[0].name
+    this.imgeServices.uploadfile(event.target.files[0], `ChatFile/${this.currentChatId}/${fileName + '-' + date}`).pipe(
+      switchMap(res => this.chatServices.addFileMessage(this.currentChatId, res, this.authorized?.uid)),
+      tap((res) => { console.log(res) })
+    ).subscribe()
+  }
+  downloadFile(url: any) {
+    let data = url
+    const blob = new Blob(data);
+
+    this.fileUrl = this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(blob));
+  }
+
 
 }

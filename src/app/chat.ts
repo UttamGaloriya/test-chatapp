@@ -18,5 +18,6 @@ export interface Chat {
 export interface Message {
     text: string;
     senderId: string;
+    file: string;
     sentDate: Date & Timestamp;
 }
