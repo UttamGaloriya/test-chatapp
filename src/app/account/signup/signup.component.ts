@@ -15,6 +15,7 @@ import { FirebaseError } from 'firebase/app';
 })
 export class SignupComponent implements OnInit {
   signupForm!: FormGroup;
+  loading: boolean = false
   hide = false
   err?: any
   emailRegx = /^(([^<>+()\[\]\\.,;:\s@"-#$%&=]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,3}))$/;
@@ -32,6 +33,7 @@ export class SignupComponent implements OnInit {
     })
   }
   signup() {
+    this.loading = true
     if (this.signupForm.valid) {
       console.log("work")
       const email = this.signupForm.value.email
@@ -42,8 +44,8 @@ export class SignupComponent implements OnInit {
         tap((res) => console.log(res)),
       )
         .subscribe(
-          (res) => { this.router.navigateByUrl('/account/login'), console.log(res), this.notification.showNotification("Account create ", "ok", "success") },
-          (err) => { this.showError(err), this.notification.showNotification("Something wrong", "ok", "error") },
+          (res) => { this.loading = false, this.router.navigateByUrl('/account/login'), console.log(res), this.notification.showNotification("Account create ", "ok", "success") },
+          (err) => { this.loading = false, this.showError(err), this.notification.showNotification("Something wrong", "ok", "error") },
           () => { console.log("login complite") }
         )
     }

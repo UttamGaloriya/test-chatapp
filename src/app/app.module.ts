@@ -23,8 +23,7 @@ import { provideStorage, getStorage } from '@angular/fire/storage';
 import { DatePipe } from '@angular/common';
 import { TextlengthPipe } from './pipe/textlength.pipe';
 import { NgxEmojiPickerModule } from 'ngx-emoji-picker';
-
-// import { AngularFireAuthModule } from '@angular/fire/compat/auth';
+import firebase from 'firebase/compat/app';
 
 @NgModule({
   declarations: [
@@ -50,7 +49,8 @@ import { NgxEmojiPickerModule } from 'ngx-emoji-picker';
     provideMessaging(() => getMessaging()),
     providePerformance(() => getPerformance()),
     provideRemoteConfig(() => getRemoteConfig()),
-    provideStorage(() => getStorage())
+    provideStorage(() => getStorage()),
+
 
   ],
   providers: [

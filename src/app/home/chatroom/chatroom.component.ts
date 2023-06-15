@@ -13,6 +13,7 @@ import { NotificationService } from 'src/app/services/notification.service';
 import { ImageService } from 'src/app/services/image.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { HttpClient } from '@angular/common/http';
+import { saveAs } from 'file-saver';
 
 @Component({
   selector: 'app-chatroom',
@@ -155,10 +156,8 @@ export class ChatroomComponent implements OnInit {
     ).subscribe()
   }
   downloadFile(url: any) {
-    let data = url
-    const blob = new Blob(data);
-
-    this.fileUrl = this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(blob));
+    this.imgeServices.downloadFile(url)
+    // saveAs(url, "file.png");
   }
 
 

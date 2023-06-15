@@ -54,18 +54,18 @@
         <mat-form-field appearance="outline" class="max-100">
 
 
-            <div class='upload-file'>
-                <button class="" (click)="inputFiled.click()">
-                    <mat-icon class="upload-file">cloud_upload</mat-icon>
-                    <input type="file" hidden #inputFiled (change)="uploadFile($event)">
-                </button>
-            </div>
+
+            <button class='upload-file' (click)="inputFiled.click()" mat-icon-button matSuffix class="color-primary">
+                <mat-icon class="upload-file">cloud_upload</mat-icon>
+                <input type="file" hidden #inputFiled (change)="uploadFile($event)">
+            </button>
+
             <input matInput [formControl]="messageControl" placeholder="Enter your message..."
                 (keydown.enter)="sendMessage()">
 
             <button (click)="toggled = !toggled" [emojiPickerDirection]=" 'top' || 'right'" [(emojiPickerIf)]="toggled"
-                matSuffix mat-icon-button (emojiPickerSelect)="handleSelection($event)"><mat-icon>😄</mat-icon></button>
-            <button mat-icon-button matSuffix (click)="sendMessage()" type="button">
+                matPrefix mat-icon-button (emojiPickerSelect)="handleSelection($event)"><mat-icon>😄</mat-icon></button>
+            <button mat-icon-button matSuffix (click)="sendMessage()" type="button" class="color-primary">
                 <mat-icon>send</mat-icon>
             </button>
         </mat-form-field>

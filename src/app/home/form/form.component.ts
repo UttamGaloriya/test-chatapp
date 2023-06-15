@@ -17,6 +17,7 @@ import { UserProfile } from 'src/app/user-profile';
 })
 export class FormComponent implements OnInit {
   form!: FormGroup
+  loading: boolean = false;
   seasons: string[] = ['male', 'female'];
 
   user$ = this.userservices.currentUserProfile$;
@@ -80,6 +81,7 @@ export class FormComponent implements OnInit {
   get f(): { [key: string]: AbstractControl } { return this.form.controls; }
 
   onSubmit() {
+    this.loading = true
     if (this.form.valid) {
       console.log(this.form.value);
       const { uid, ...data } = this.form.value;
@@ -87,7 +89,7 @@ export class FormComponent implements OnInit {
         return;
       }
       this.userservices.updateUser({ uid, ...data }).pipe().subscribe(
-        (user) => { console.log(user), this.notification.showNotification("Data Update Sucessfuly", '', 'success') }
+        (user) => { console.log(user), this.loading = false, this.notification.showNotification("Data Update Sucessfuly", '', 'success') }
       )
       this.editProfile = !this.editProfile
     } else {
@@ -108,11 +110,12 @@ export class FormComponent implements OnInit {
   }
 
   uploadImage(event: any, user: UserProfile) {
+    this.loading = true
     this.imageservice.uploadImage(event.target.files[0], `images/profile/${user?.uid}`).pipe(
       switchMap((photoURL) =>
         this.userservices.updateUser({ uid: user?.uid, photoURL }),
       )).subscribe(
-        (data) => { this.notification.showNotification("Image Update Sucessfuly", '', 'success') }
+        (data) => { this.loading = false, this.notification.showNotification("Image Update Sucessfuly", '', 'success') }
       )
   }
 }
