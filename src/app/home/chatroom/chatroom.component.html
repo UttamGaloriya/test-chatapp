@@ -64,10 +64,13 @@
                 (keydown.enter)="sendMessage()">
 
             <button (click)="toggled = !toggled" [emojiPickerDirection]=" 'top' || 'right'" [(emojiPickerIf)]="toggled"
-                matPrefix mat-icon-button (emojiPickerSelect)="handleSelection($event)"><mat-icon>😄</mat-icon></button>
+                matPrefix mat-icon-button (emojiPickerSelect)="handleSelection($event)">😄
+            </button>
+
             <button mat-icon-button matSuffix (click)="sendMessage()" type="button" class="color-primary">
                 <mat-icon>send</mat-icon>
             </button>
+            000000
         </mat-form-field>
 
     </div>

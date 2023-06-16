@@ -74,8 +74,8 @@ export class ChatroomComponent implements OnInit {
           this.currentChatId = id; // Update the current chat ID
           return this.chatServices.getChatMessages$(id).pipe(
             map((messages) => {
-              this.Message_data = messages
-              return this.Message_data
+
+              return messages
             })
           );
         }),
@@ -119,7 +119,7 @@ export class ChatroomComponent implements OnInit {
       if (this.endOfChat) {
         this.endOfChat.nativeElement.scrollIntoView({ behavior: 'smooth' });
       }
-    }, 100);
+    }, 1000);
   }
 
 
@@ -146,6 +146,7 @@ export class ChatroomComponent implements OnInit {
       res => { console.log(this.Message_data = res.concat(oldMessage)), this.loading = false }
     )
   }
+
   uploadFile(event: any) {
     // this.imgeServices.uploadfile()
     const date = Date.now()
