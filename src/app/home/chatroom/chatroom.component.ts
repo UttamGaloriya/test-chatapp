@@ -151,7 +151,7 @@ export class ChatroomComponent implements OnInit {
     // this.imgeServices.uploadfile()
     const date = Date.now()
     const fileName = event.target.files[0].name
-    this.imgeServices.uploadfile(event.target.files[0], `ChatFile/${this.currentChatId}/${fileName + '-' + date}`).pipe(
+    this.imgeServices.uploadfile(event.target.files[0], `ChatFile/${this.currentChatId}/${fileName}`).pipe(
       switchMap(res => this.chatServices.addFileMessage(this.currentChatId, res, this.authorized?.uid)),
       tap((res) => { console.log(res) })
     ).subscribe()
@@ -161,5 +161,58 @@ export class ChatroomComponent implements OnInit {
     // saveAs(url, "file.png");
   }
 
+  downloadFxile(url: string): void {
+    const link = document.createElement('a');
+    link.href = url;
+    link.target = '_blank';
+    link.setAttribute('download', 'file.png');
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    saveAs(url, "file.png");
+  }
 
+
+  downloadFicle(url: string): void {
+    console.log(url)
+    const xhr = new XMLHttpRequest();
+    xhr.responseType = 'blob';
+
+    xhr.onload = () => {
+      const a = document.createElement('a');
+      a.href = window.URL.createObjectURL(xhr.response);
+      a.download = 'file.png';
+      a.style.display = 'none';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(a.href);
+    };
+
+    xhr.open('GET', url);
+    xhr.send();
+  }
+
+  // downloadFile(url: any) {
+  //   fetch(url, { mode: 'no-cors' })
+  //     .then(response => response.blob())
+  //     .then(blob => {
+  //       const a = document.createElement('a');
+  //       const objectURL = URL.createObjectURL(blob);
+  //       console.log(objectURL);
+  //       a.href = objectURL;
+  //       debugger
+  //       // a.download = url.substring(url.lastIndexOf('/') + 1);
+  //       a.download = "file.PNG";
+  //       a.style.display = 'none';
+  //       document.body.appendChild(a);
+  //       a.click();
+  //       document.body.removeChild(a);
+  //       URL.revokeObjectURL(objectURL);
+  //     })
+  //     .catch(error => {
+  //       console.error('Error downloading file:', error);
+  //     });
+  // }
+  // downloadFile()
 }

@@ -33,6 +33,15 @@ export class ImageService {
   }
 
 
+
+
+  //fetch api support only no cros mod
+
+
+
+
+
+
   // downloadFile(fileUrl: string): void {
   //   const xhr = new XMLHttpRequest();
   //   xhr.responseType = 'blob';
@@ -100,6 +109,7 @@ export class ImageService {
   downloadFile(fileUrl: string): void {
     const xhr = new XMLHttpRequest();
     xhr.responseType = 'blob';
+    console.log(xhr.responseURL)
 
     xhr.onload = () => {
       const contentType = xhr.getResponseHeader('content-type');

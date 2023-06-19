@@ -26,9 +26,9 @@
 
 
                         <ng-container *ngIf="message.file">
-                            <a [href]="fileUrl" download="file" (click)="downloadFile(message.file)">file</a>
+                            <!-- <a [href]="fileUrl" download="file" (click)="downloadFile(message.file)">file</a> -->
 
-                            <!-- <button type="button" (click)="downloadFile(message.file)">download</button> -->
+                            <button type="button" (click)="downloadFile(message.file)">download</button>
                         </ng-container>
 
                         <div>=>{{i+1}}</div>
@@ -70,7 +70,6 @@
             <button mat-icon-button matSuffix (click)="sendMessage()" type="button" class="color-primary">
                 <mat-icon>send</mat-icon>
             </button>
-            000000
         </mat-form-field>
 
     </div>
