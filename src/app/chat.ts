@@ -16,6 +16,7 @@ export interface Chat {
 }
 
 export interface Message {
+    length: number;
     text: string;
     senderId: string;
     file: string;

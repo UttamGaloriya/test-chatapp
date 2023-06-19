@@ -119,13 +119,13 @@ export class ChatService {
 
   getChatMessages$(chatId: string): Observable<Message[]> {
     const ref = collection(this.firestore, 'chats', chatId, 'messages');
-    const queryAll = query(ref, orderBy('sentDate', 'asc'), limitToLast(7));
+    const queryAll = query(ref, orderBy('sentDate', 'asc'), limitToLast(20));
     return collectionData(queryAll) as Observable<Message[]>;
   }
 
   getChatMessagesLoader$(chatId: string, chat: Message): Observable<Message[]> {
     const ref = collection(this.firestore, 'chats', chatId, 'messages');
-    const queryAll = query(ref, orderBy('sentDate', 'asc'), limitToLast(7), endBefore(chat.sentDate),);
+    const queryAll = query(ref, orderBy('sentDate', 'asc'), limitToLast(20), endBefore(chat.sentDate),);
     return collectionData(queryAll) as Observable<Message[]>;
   }
 
