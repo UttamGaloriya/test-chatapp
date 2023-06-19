@@ -68,7 +68,6 @@ export class ChatService {
 
   updateCurrentChat(id: any): void {
     this.cureentid.next(id);
-    console.log(id)
   }
 
   selectedChat$ = combineLatest([
