@@ -14,6 +14,8 @@ import { ImageService } from 'src/app/services/image.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { HttpClient } from '@angular/common/http';
 import { saveAs } from 'file-saver';
+import { url } from 'inspector';
+import { getDownloadURL, ref, Storage, uploadBytes, getStorage } from '@angular/fire/storage';
 
 @Component({
   selector: 'app-chatroom',
@@ -44,7 +46,7 @@ export class ChatroomComponent implements OnInit {
 
   @ViewChild('endOfChat') endOfChat!: ElementRef;
   @ViewChild('midOfChat') midOfchat!: ElementRef;
-  constructor(private chatServices: ChatService, private http: HttpClient, private sanitizer: DomSanitizer, private renderer: Renderer2, private authServices: AuthService, private userservices: UsersService, private notfication: NotificationService, private imgeServices: ImageService) {
+  constructor(private chatServices: ChatService, private http: HttpClient, private sanitizer: DomSanitizer, private renderer: Renderer2, private authServices: AuthService, private userservices: UsersService, private notfication: NotificationService, private imgeServices: ImageService, private storage: Storage) {
     this.scrollToBottom()
   }
 
@@ -53,46 +55,32 @@ export class ChatroomComponent implements OnInit {
     this.scrollToBottom()
   }
 
-
-  // myfunction(id: any) {
-  //   if (this.currentChatId !== id) {
-  //     this.message$ = this.chatServices.selectedChat$.pipe(
-  //       switchMap((chatId) => {
-  //         this.currentChatId = id; // Update the current chat ID
-  //         return this.chatServices.getChatMessages$(id).pipe(
-  //           map((messages) => messages.slice(-this.count)) // Get the last 30 messages
-  //         );
-  //       }),
-  //       tap((res) => { this.scrollToBottom(), this.loading = false })
-  //     );
-  //   }
-  // }
   myfunction(id: any) {
     if (this.currentChatId !== id) {
+      this.msgToggled = true;
+      this.msgLast = false;
+      this.Message_data = [];
+
       this.message$ = this.chatServices.selectedChat$.pipe(
         switchMap((chatId) => {
           this.currentChatId = id; // Update the current chat ID
           return this.chatServices.getChatMessages$(id).pipe(
             map((messages) => {
-
-              return messages
+              this.Message_data = messages
+              return this.Message_data
             })
           );
         }),
         tap((res) => {
+          this.scrollToBottom(), this.loading = false;
           if (this.msgToggled) {
             if (this.msgLast) {
               this.Message_data = this.Message_data.concat(res[res.length - 1]);
             } else { this.Message_data = res; }
           }
-          this.scrollToBottom(), this.loading = false, this.msgToggled = false, this.msgLast = true
-        })
-      );
+        }));
     }
   }
-
-
-
 
 
   sendMessage() {
@@ -153,57 +141,34 @@ export class ChatroomComponent implements OnInit {
     const fileName = event.target.files[0].name
     this.imgeServices.uploadfile(event.target.files[0], `ChatFile/${this.currentChatId}/${fileName}`).pipe(
       switchMap(res => this.chatServices.addFileMessage(this.currentChatId, res, this.authorized?.uid)),
-      tap((res) => { console.log(res) })
+      tap((res) => { console.log(res, this.msgToggled = true) })
     ).subscribe()
+
   }
-  downloadFile(url: any) {
-    this.imgeServices.downloadFile(url)
+  downloaddFile(url: any) {
+    let ur = url.replace(/^.*[\\\/]/, '');
+    ur = url.replace()
+    console.log(url)
+    console.log(ur)
     // saveAs(url, "file.png");
   }
 
-  downloadFxile(url: string): void {
-    const link = document.createElement('a');
-    link.href = url;
-    link.target = '_blank';
-    link.setAttribute('download', 'file.png');
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    saveAs(url, "file.png");
-  }
 
 
-  downloadFicle(url: string): void {
-    console.log(url)
-    const xhr = new XMLHttpRequest();
-    xhr.responseType = 'blob';
 
-    xhr.onload = () => {
-      const a = document.createElement('a');
-      a.href = window.URL.createObjectURL(xhr.response);
-      a.download = 'file.png';
-      a.style.display = 'none';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      window.URL.revokeObjectURL(a.href);
-    };
 
-    xhr.open('GET', url);
-    xhr.send();
-  }
 
-  // downloadFile(url: any) {
-  //   fetch(url, { mode: 'no-cors' })
-  //     .then(response => response.blob())
+  // downloadFiled(url: any) {
+  //   fetch(url, { method: 'GET',mode:'no-cors' })
+  //     .then(response => { console.log(response); return response.blob() })
   //     .then(blob => {
+  //       console.log(blob)
   //       const a = document.createElement('a');
   //       const objectURL = URL.createObjectURL(blob);
   //       console.log(objectURL);
   //       a.href = objectURL;
-  //       debugger
   //       // a.download = url.substring(url.lastIndexOf('/') + 1);
-  //       a.download = "file.PNG";
+  //       a.download = "ChatFile%2FamftAWWuEBhfaSdn0Kpy%2FScreenshot%20(1).png";
   //       a.style.display = 'none';
   //       document.body.appendChild(a);
   //       a.click();
@@ -214,5 +179,62 @@ export class ChatroomComponent implements OnInit {
   //       console.error('Error downloading file:', error);
   //     });
   // }
-  // downloadFile()
+
+  downloadFile(url: any) {
+    const httpsReference = ref(this.storage, url);
+    console.log(httpsReference.fullPath)
+    console.log(httpsReference.bucket)
+    console.log(httpsReference.storage)
+
+    getDownloadURL(ref(this.storage, httpsReference.fullPath))
+      .then((url) => {
+        // `url` is the download URL for 'images/stars.jpg'
+
+        // This can be downloaded directly:
+        /*
+        const xhr = new XMLHttpRequest();
+        console.log(xhr)
+        xhr.responseType = 'blob';
+        xhr.onload = (event) => {
+          const blob = xhr.response;
+        };
+        xhr.open('GET', url);
+        xhr.send();*/
+
+        //  const a = document.createElement('a');
+        //  // const objectURL = URL.createObjectURL(url);
+        //  a.href = url;
+        //  a.download = httpsReference.bucket;
+        //  console.log()
+        //  a.style.display = 'none';
+        //  document.body.appendChild(a);
+        //  a.click();
+        //  document.body.removeChild(a);
+        //  URL.revokeObjectURL(url);
+
+        const xhr = new XMLHttpRequest();
+        xhr.responseType = 'blob';
+        xhr.onload = (event) => {
+          /* Create a new Blob object using the response
+          *  data of the onload object.
+          */
+          const blob = new Blob([xhr.response], { type: 'image/png' });
+          const a: any = document.createElement('a');
+          a.style = 'display: none';
+          document.body.appendChild(a);
+          const url = window.URL.createObjectURL(blob);
+          a.href = url;
+          a.download = httpsReference.fullPath;
+          a.click();
+          window.URL.revokeObjectURL(url);
+        };
+        xhr.open('GET', url);
+        xhr.send();
+
+      })
+      .catch((error) => {
+        // Handle any errors
+        console.log(error)
+      });
+  }
 }
