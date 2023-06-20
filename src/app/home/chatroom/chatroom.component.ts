@@ -49,6 +49,7 @@ export class ChatroomComponent implements OnInit {
   constructor(private chatServices: ChatService,
     private userservices: UsersService,
     private imgeServices: ImageService,
+    private sanitizer: DomSanitizer,
     private storage: Storage) {
     this.scrollToBottom()
   }
@@ -157,23 +158,23 @@ export class ChatroomComponent implements OnInit {
 
   downloadFile(url: any) {
     const httpsReference = ref(this.storage, url);
-
-    fetch(url, { method: 'GET', })
-      .then(response => { console.log(response); return response.blob() })
-      .then(blob => {
-        console.log(blob)
-        const a = document.createElement('a');
-        const objectURL = URL.createObjectURL(blob);
-        a.href = objectURL;
-        a.download = httpsReference.name;
-        a.style.display = 'none';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(objectURL);
-      })
-      .catch(error => {
-        console.error('Error downloading file:', error);
-      });
+    saveAs(url, httpsReference.name)
+    //   fetch(url, { method: 'GET', })
+    //     .then(response => { console.log(response); return response.blob() })
+    //     .then(blob => {
+    //       console.log(blob)
+    //       const a = document.createElement('a');
+    //       const objectURL = URL.createObjectURL(blob);
+    //       a.href = objectURL;
+    //       a.download = httpsReference.name;
+    //       a.style.display = 'none';
+    //       document.body.appendChild(a);
+    //       a.click();
+    //       document.body.removeChild(a);
+    //       URL.revokeObjectURL(objectURL);
+    //     })
+    //     .catch(error => {
+    //       console.error('Error downloading file:', error);
+    //     });
   }
 }
