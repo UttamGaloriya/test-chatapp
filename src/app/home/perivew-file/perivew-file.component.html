@@ -1,0 +1,7 @@
+<!-- <img [src]="src | safe" alt="img"> -->
+<!-- <img [src]="src | safe" alt="img" *ngIf="(type | filetype)=='image'"> -->
+
+<!-- <video [src]="src | safe" *ngIf="type=='video'"></video> -->
+<div *ngIf=" (type | filetype)==='image'">
+    <img [src]="src | safe" alt="img">
+</div>

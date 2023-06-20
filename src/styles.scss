@@ -124,7 +124,7 @@ color: rgb(14, 114, 207);
 .chat-room .input-area{margin: 0 3%;}
 .chat-span-active-user{
   background: #ccf7ff;
-  padding: 10px 37px 30px 10px;
+  padding:10px 46px 30px 17px;
   border-radius: 10px 10px 0 10px;
   margin-left: auto;
   max-width: 70%;
@@ -193,6 +193,12 @@ emoji-picker {position: absolute;z-index: 9999;display: none;top: -90px;left: -1
 .form-loading{position: absolute;left:48%;z-index: 9999;}
 .loading-img{display: flex;align-items: center;justify-content: center;position: relative;}
 .loading-img img{width: 100px;position: absolute;z-index: 9999;top: 30px;}
+.preview-file {position: relative;}
+.preview-file ::before {content: '';position: absolute;border: 1 px solid red;}
+.file-container{border: 1px solid red;}
+.downloadFile{border: none;margin: 0;padding: 0;position: absolute;left: 0;top: 0;background: #f0f8ff63;z-index: 9;right: 0;bottom: 0;}
+.file-div{position: relative;}
+// .preview-file img{width: 100%;border:  none;}
 /* Responsive Media Queries
 --------------------------------------------------------------------------------------------------------*/
 @media (max-width:1399px) { }

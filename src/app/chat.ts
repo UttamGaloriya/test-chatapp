@@ -21,4 +21,5 @@ export interface Message {
     senderId: string;
     file: string;
     sentDate: Date & Timestamp;
+    type: string
 }

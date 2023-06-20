@@ -15,7 +15,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { HttpClient } from '@angular/common/http';
 import { saveAs } from 'file-saver';
 import { url } from 'inspector';
-import { getDownloadURL, ref, Storage, uploadBytes, getStorage } from '@angular/fire/storage';
+import { getDownloadURL, ref, Storage, uploadBytes, getStorage, getMetadata } from '@angular/fire/storage';
 
 @Component({
   selector: 'app-chatroom',
@@ -46,7 +46,10 @@ export class ChatroomComponent implements OnInit {
 
   @ViewChild('endOfChat') endOfChat!: ElementRef;
   @ViewChild('midOfChat') midOfchat!: ElementRef;
-  constructor(private chatServices: ChatService, private http: HttpClient, private sanitizer: DomSanitizer, private renderer: Renderer2, private authServices: AuthService, private userservices: UsersService, private notfication: NotificationService, private imgeServices: ImageService, private storage: Storage) {
+  constructor(private chatServices: ChatService,
+    private userservices: UsersService,
+    private imgeServices: ImageService,
+    private storage: Storage) {
     this.scrollToBottom()
   }
 
@@ -55,34 +58,7 @@ export class ChatroomComponent implements OnInit {
     this.scrollToBottom()
   }
 
-  // myfunction(id: any) {
-  //   if (this.currentChatId !== id) {
-  //     this.msgToggled = true;
-  //     this.msgLast = false;
-  //     this.Message_data = [];
-  //     this.currentChatId = id;
-  //     console.log(this.currentChatId)
 
-  //     this.message$ = this.chatServices.selectedChat$.pipe(
-  //       switchMap((chatId) => {
-  //         this.currentChatId = id; // Update the current chat ID
-  //         return this.chatServices.getChatMessages$(id).pipe(
-  //           map((messages) => {
-  //             this.Message_data = messages
-  //             return this.Message_data
-  //           })
-  //         );
-  //       }),
-  //       tap((res) => {
-  //         this.scrollToBottom(), this.loading = false;
-  //         if (this.msgToggled) {
-  //           if (this.msgLast) {
-  //             this.Message_data = this.Message_data.concat(res[res.length - 1]);
-  //           } else { this.Message_data = res; }
-  //         }
-  //       }));
-  //   }
-  // }
 
   myfunction(id: any) {
     if (this.currentChatId !== id) {
@@ -96,8 +72,8 @@ export class ChatroomComponent implements OnInit {
           this.currentChatId = id; // Update the current chat ID
           return this.chatServices.getChatMessages$(id).pipe(
             map((messages) => {
-              this.Message_data = messages
-              return this.Message_data
+
+              return messages
             })
           );
         }),
@@ -137,7 +113,7 @@ export class ChatroomComponent implements OnInit {
       if (this.endOfChat) {
         this.endOfChat.nativeElement.scrollIntoView({ behavior: 'smooth' });
       }
-    }, 1000);
+    }, 100);
   }
 
 
@@ -166,11 +142,13 @@ export class ChatroomComponent implements OnInit {
   }
 
   uploadFile(event: any) {
-    // this.imgeServices.uploadfile()
     const date = Date.now()
     const fileName = event.target.files[0].name
     this.imgeServices.uploadfile(event.target.files[0], `ChatFile/${this.currentChatId}/${fileName}`).pipe(
-      switchMap(res => this.chatServices.addFileMessage(this.currentChatId, res, this.authorized?.uid)),
+      switchMap(res =>
+        this.chatServices.addFileMessage(this.currentChatId, res, this.authorized?.uid)
+
+      ),
       tap((res) => { console.log(res, this.msgToggled = true) })
     ).subscribe()
 
@@ -179,15 +157,14 @@ export class ChatroomComponent implements OnInit {
 
   downloadFile(url: any) {
     const httpsReference = ref(this.storage, url);
+
     fetch(url, { method: 'GET', })
       .then(response => { console.log(response); return response.blob() })
       .then(blob => {
         console.log(blob)
         const a = document.createElement('a');
         const objectURL = URL.createObjectURL(blob);
-        // console.log(objectURL);
         a.href = objectURL;
-        // a.download = url.substring(url.lastIndexOf('/') + 1);
         a.download = httpsReference.name;
         a.style.display = 'none';
         document.body.appendChild(a);
@@ -199,7 +176,4 @@ export class ChatroomComponent implements OnInit {
         console.error('Error downloading file:', error);
       });
   }
-
-
-
 }

@@ -17,36 +17,37 @@
     <app-spinner class="loader-chat" *ngIf="loading"></app-spinner>
     <!-- <div class="text-chat"> -->
     <div class="chat-room-content" *ngIf="authUser$ |async as auth" (scroll)="onScroll($event)" #midOfChat>
-        <!-- <ng-container *ngIf="message$ |async as msg"> -->
-        <div *ngFor="let message of Message_data let i=index">
-            <div class="chat-span-li">
-                <div class="chat-span-user"
-                    [ngClass]="{'chat-span-active-user' : auth.uid==message.senderId ,'chat-span-other-user':auth.uid!==message.senderId }">
-                    {{message.text}}
+        <ng-container *ngIf="message$ |async as msg">
+            <div *ngFor="let message of Message_data let i=index">
+                <div class="chat-span-li">
+                    <div class="chat-span-user"
+                        [ngClass]="{'chat-span-active-user' : auth.uid==message.senderId ,'chat-span-other-user':auth.uid!==message.senderId }">
+                        {{message.text}}
+                        <div *ngIf="message.file" class="file-div">
 
 
-                    <ng-container *ngIf="message.file">
-                        <!-- <a [href]="fileUrl" download="file" (click)="downloadFile(message.file)">file</a> -->
+                            <button type="button" (click)="downloadFile(message.file )"
+                                class="downloadFile"><mat-icon>download</mat-icon></button>
+                            <iframe [src]="message.file | safe" class="preview-file" frameborder='0' scrolling='no'
+                                id="iframe" width="100%" height="100%">
+                            </iframe>
+                        </div>
 
-                        <button type="button" (click)="downloadFile(message.file)">download</button>
-                        <img src="#" alt="" id="myimg">
-                    </ng-container>
+                        <!-- <div>=>{{i+1}}</div> -->
+                        <div class="sentdate">{{message.sentDate | dateDisplay }}</div>
+                    </div>
 
-                    <div>=>{{i+1}}</div>
-                    <div class="sentdate">{{message.sentDate | dateDisplay }}</div>
                 </div>
-
             </div>
-        </div>
-        <!-- last seen  -->
-        <div class="last-seen" *ngIf="lastSeenId!=auth.uid">
-            <!-- <span>{{lastSeenId==auth.uid ? auth.userName :user.chatName}}</span> -->
-            <img [src]="user.chatPic || './assets/images/user-profile.png'" alt="profile-img"
-                class="chat-profile-img-seen">
-            <span>{{user.chatName}}</span>
-        </div>
-        <div #endOfChat></div>
-        <!-- </ng-container> -->
+            <!-- last seen  -->
+            <div class="last-seen" *ngIf="lastSeenId!=auth.uid">
+                <!-- <span>{{lastSeenId==auth.uid ? auth.userName :user.chatName}}</span> -->
+                <img [src]="user.chatPic || './assets/images/user-profile.png'" alt="profile-img"
+                    class="chat-profile-img-seen">
+                <span>{{user.chatName}}</span>
+            </div>
+            <div #endOfChat></div>
+        </ng-container>
     </div>
 
 

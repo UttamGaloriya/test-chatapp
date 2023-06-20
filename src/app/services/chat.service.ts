@@ -107,6 +107,7 @@ export class ChatService {
           file: fileUrl,
           senderId: user?.uid,
           sentDate: today,
+
         }),
 
       ),

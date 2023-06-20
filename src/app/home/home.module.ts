@@ -16,6 +16,9 @@ import { TextlengthPipe } from '../pipe/textlength.pipe';
 import { ChatDatePipe } from '../pipe/chat-date.pipe';
 import { NgxEmojiPickerModule } from 'ngx-emoji-picker';
 import { SpinnerComponent } from './spinner/spinner.component';
+import { SafePipe } from '../pipe/safe.pipe';
+import { PerivewFileComponent } from './perivew-file/perivew-file.component';
+import { FiletypePipe } from '../pipe/filetype.pipe';
 
 
 
@@ -33,6 +36,9 @@ import { SpinnerComponent } from './spinner/spinner.component';
     TextlengthPipe,
     ChatDatePipe,
     SpinnerComponent,
+    SafePipe,
+    PerivewFileComponent,
+    FiletypePipe,
   ],
   imports: [
     CommonModule,
